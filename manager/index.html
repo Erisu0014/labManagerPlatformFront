@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>初始页</title>
+    <script src="../js/jquery-v3.2.1.js"></script>
+</head>
+<body>
+
+<script>
+    $.ajax({
+        type:"get",
+        url:"http://localhost:8080/test.do",
+        async:false,
+        success:function (data) {
+            console.log(data)
+        }
+    })
+</script>
+</body>
+</html>
