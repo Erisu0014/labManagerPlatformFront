@@ -89,10 +89,9 @@
                     type: "post",
                     url: "http://localhost:8080/login/login.do",
                     data: $(data.form).serialize(),
-                    dataType: "json",
                     async: false,
                     success: function (data) {
-                        //alert("数据：" + data);
+                        console.log(data)
                         if (data == "fail") {
                             layer.alert("用户名或密码错误！");
                             window.location.href = "managerLogin.html";

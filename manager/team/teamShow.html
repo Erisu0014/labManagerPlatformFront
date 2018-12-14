@@ -88,6 +88,27 @@
 
 <script>
     var team;
+    first();
+    function first() {
+        $.ajax({
+            type: "get",
+            url: "http://localhost:8080/login/nothing.do",
+            data: {
+                labUserCookie: $.cookie("labUserCookie"),
+                sendUrl:window.location.href
+            },
+            async: false,
+            dataType: "json",
+            success: function(data) {
+                console.log(data);
+                if(data.info == '404') {
+                    window.location.href = "../login/managerLogin.html";
+                }else{
+                    getData();
+                }
+            }
+        });
+    }
 
     function getData() {
         //获取数据
@@ -138,7 +159,7 @@
         });
     }
 
-    getData();
+
 
 
 </script>

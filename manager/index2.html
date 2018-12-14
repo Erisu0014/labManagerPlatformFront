@@ -88,28 +88,28 @@
 <script src="../js/jquery.js"></script>
 <script src="../js/jquery.cookie.js"></script>
 <script>
-    //first();
+    first();
 
     function first() {
         $.ajax({
             type: "get",
             url: "http://localhost:8080/login/nothing.do",
             data: {
-                uid: $.cookie("uid")
+                labUserCookie: $.cookie("labUserCookie"),
+                sendUrl:window.location.href
             },
             async: false,
             dataType: "json",
             success: function(data) {
-                //alert(data.info);
+                console.log(data);
                 if(data.info == '404') {
-                    window.location.href = "login/teacherlogin.html";
-                } else {
+                    window.location.href = "../login/managerLogin.html";
+                }else{
                     second();
                 }
             }
         });
     }
-
     var manager;
 
     function second() {
