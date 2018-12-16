@@ -23,17 +23,17 @@
         </fieldset>
 
         <form class="layui-form" lay-filter="teamForm" method="post">
-            <!--<div class="layui-form-item" style="display: none">-->
-            <!--<label class="layui-form-label" style="width: 100px">团队id</label>-->
-            <!--<div class="layui-input-block">-->
-            <!--<input type="text" name="teamId" autocomplete="off" class="layui-input" :value="teamId">-->
-            <!--</div>-->
-            <!--</div>-->
+            <div class="layui-form-item" style="display: none">
+                <label class="layui-form-label" style="width: 100px">团队id</label>
+                <div class="layui-input-block">
+                    <input type="text" name="teamId" autocomplete="off" class="layui-input">
+                </div>
+            </div>
             <div class="layui-form-item">
                 <label class="layui-form-label" style="width: 100px">团队名称</label>
                 <div class="layui-input-block">
                     <input type="text" name="teamName" required lay-verify="required" placeholder="请输入团队名称"
-                           autocomplete="off" class="layui-input" :value="teamName">
+                           autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
@@ -89,21 +89,22 @@
 <script>
     var team;
     first();
+
     function first() {
         $.ajax({
             type: "get",
             url: "http://localhost:8080/login/nothing.do",
             data: {
                 labUserCookie: $.cookie("labUserCookie"),
-                sendUrl:window.location.href
+                sendUrl: window.location.href
             },
             async: false,
             dataType: "json",
-            success: function(data) {
+            success: function (data) {
                 console.log(data);
-                if(data.info == '404') {
+                if (data.info == '404') {
                     window.location.href = "../login/managerLogin.html";
-                }else{
+                } else {
                     getData();
                 }
             }
@@ -116,6 +117,10 @@
         $.ajax({
             type: "get",
             url: "http://localhost:8080/team/getTeam.do",
+            data: {
+                labUserCookie: $.cookie("labUserCookie"),
+                sendUrl: window.location.href
+            },
             async: "false",
             success: function (data) {
                 team = JSON.parse(data);
@@ -137,7 +142,7 @@
                 "teamEmail": team.teamEmail,
                 "teamPhone": team.teamPhone,
                 "teamDes": team.teamDes,
-                "teamAim":team.teamAim
+                "teamAim": team.teamAim
             });
 
             form.on('submit(*)', function (data) {
@@ -146,7 +151,7 @@
                 console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
                 $.ajax({
                     type: "post",
-                    url: "http://localhost:8080/team/updateTeam.do",
+                    url: "http://localhost:8080/team/updateTeam.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href,
                     data: $(data.form).serialize(),
                     success: function (info) {
                         if (info == "success") {
@@ -158,8 +163,6 @@
             });
         });
     }
-
-
 
 
 </script>
