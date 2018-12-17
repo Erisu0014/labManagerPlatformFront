@@ -21,13 +21,13 @@
         </fieldset>
 
         <div class="layui-col-md-offset3" style="margin-top: 100px;">
-            <form class="layui-form" action="" @submit.prevent="submit">
+            <form class="layui-form" method="post">
 
                 <div class="layui-form-item ">
 
                     <label class="layui-form-label"><i class="layui-icon layui-icon-username"></i> </label>
                     <div class="layui-input-inline">
-                        <input type="text" name="username" v-model="username" lay-verify="title" autocomplete="off"
+                        <input type="text" name="username" required lay-verify="required" autocomplete="off"
                                placeholder="请输入账号" class="layui-input">
                     </div>
                 </div>
@@ -35,25 +35,26 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label"><i class="layui-icon layui-icon-password"></i></label>
                     <div class="layui-input-inline">
-                        <input type="password" name="password" v-model="password" lay-verify="pass" placeholder="请输入密码"
+                        <input type="password" name="password" required lay-verify="required" placeholder="请输入密码"
                                autocomplete="off" class="layui-input">
                     </div>
                     <div class="layui-form-mid layui-word-aux"></div>
                 </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label"><i class="layui-icon layui-icon-vercode" ></i></label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="kaptcha" v-model="kaptcha" lay-verify="required" placeholder="请输入验证码" autocomplete="off" class="layui-input">
+                <!--<div class="layui-form-item">-->
+                    <!--<label class="layui-form-label"><i class="layui-icon layui-icon-vercode"></i></label>-->
+                    <!--<div class="layui-input-inline">-->
+                        <!--<input type="text" name="kaptcha" required lay-verify="required" placeholder="请输入验证码"-->
+                               <!--autocomplete="off" class="layui-input">-->
 
-                    </div>
-                    <div style="margin-left: 0px;">
-                        <img src="http://localhost:8080/kaptcha.jpg" id="kaptchaImage" @click="reloadCode" title="点击刷新验证码"/>
-                    </div>
-                </div>
-
+                    <!--</div>-->
+                    <!--<div style="margin-left: 0px;">-->
+                        <!--<img src="http://localhost:8080/kaptcha.jpg" id="kaptchaImage" onclick="reloadCode()"-->
+                             <!--title="点击刷新验证码"/>-->
+                    <!--</div>-->
+                <!--</div>-->
                 <div class="layui-form-item">
                     <div class="layui-input-block">
-                        <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                        <button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
                         <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                     </div>
                 </div>
@@ -71,114 +72,63 @@
 <script src="../../layui.js" charset="utf-8"></script>
 <script src="../../js/jquery.cookie.js"></script>
 <script>
-    if(window!=top){
-        top.location.href=window.location.href;
+
+    if (window != top) {
+        top.location.href = window.location.href;
     }
-
     //目前存在用来做相关测试
-    $(function() {
-
-        $(document).bind("contextmenu", function(e) {
-            return false;
-        });
-
-        var vue = new Vue({
-            "el": "#app",
-            "data": {
-                username: "",
-                password: "",
-                kaptcha: ""
-            },
-            "methods": {
-                "stuLogin": function() {
-                    console.log("成功" + this.username + ":" + this.password + ":" + this.kaptcha);
-                    var username = this.username;
-                    var password = md5(this.password);
-                    var kaptcha = this.kaptcha;
-                    $.ajax({
-                        xhrFields: {
-                            withCredentials: true
-                        },
-                        type: "post",
-                        url: "http://localhost:8080/testLogin.do",
-                        async: false,
-                        dataType: "json",
-                        data: {
-                            //message: JSON.stringify(data.field)
-                            stuNum: username,
-                            stuPwd: password,
-                            kaptcha: kaptcha
-                        },
-                        success: function(data) {
-                            //alert("数据：" + data);
-                            if(data == "no") {
-                                alert("用户名或密码错误！");
-                                window.location.href = "managerLogin.html";
-                            } else if(data == "error") {
-                                alert("验证码输入错误");
-                                vue.reloadCode();
-
-                            } else {
-                                $.cookie("sid", data, {
-                                    expires: 7,
-                                    path: '/'
-                                });
-                                window.location.href = "../index.html";
-                            }
-                        },
-                        error: function(data) {
-                            console.log("后台返回数据失败");
+    $(function () {
+        layui.use('form', function () {
+            layer=layui.layer;
+            var form = layui.form;
+            form.on('submit(*)', function (data) {
+                //console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
+                //console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+                console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+                $.ajax({
+                    type: "post",
+                    url: "http://localhost:8080/login/login.do",
+                    data: $(data.form).serialize(),
+                    async: false,
+                    success: function (data) {
+                        console.log(data)
+                        if (data == "fail") {
+                            layer.alert("用户名或密码错误！");
+                            window.location.href = "managerLogin.html";
                         }
-                    });
-                },
-                "reloadCode": function() {
-                    var time = new Date().getTime();
-                    document.getElementById("kaptchaImage").src = "http://localhost:8080/kaptcha.jpg?" + time;
-                }
-            }
-
-        })
-    })
-
-    layui.use(['form', 'layedit', 'laydate'], function() {
-        var form = layui.form,
-            layer = layui.layer,
-            layedit = layui.layedit,
-            laydate = layui.laydate;
-
-        //日期
-        laydate.render({
-            elem: '#date'
+                        // else if (data == "wrong") {
+                        //     layer.alert("验证码输入错误");
+                        //     reloadCode();
+                        // }
+                        else {
+                            $.cookie("labUserCookie", data, {
+                                expires: 7,
+                                path: '/'
+                            });
+                            //判断其管理身份
+                            if(data.substr(0,1)=="1"){
+                                window.location.href = "../index.html";
+                                //https://blog.csdn.net/qq_36938933/article/details/77978724
+                                window.event.returnValue=false;
+                            }else{
+                                window.location.href = "../index2.html";
+                                window.event.returnValue=false;
+                            }
+                        }
+                        return true;
+                    },
+                    error: function (data) {
+                        console.log("后台返回数据失败");
+                    }
+                });
+            });
         });
-        laydate.render({
-            elem: '#date1'
-        });
-
-        //创建一个编辑器
-        var editIndex = layedit.build('LAY_demo_editor');
-
-        //自定义验证规则
-        form.verify({
-            title: function(value) {
-                if(value.length != 12) {
-                    return '学号不正确';
-                }
-            },
-            pass: [/(.+){6,20}$/, '密码必须6到20位'],
-            content: function(value) {
-                layedit.sync(editIndex);
-            }
-        });
-
-        //监听指定开关
-        // form.on('switch(switchTest)', function(data) {
-        //     layer.msg('开关checked：' + (this.checked ? 'true' : 'false'), {
-        //         offset: '6px'
-        //     });
-        //     layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis)
-        // });
-
     });
+        function reloadCode() {
+            var time = new Date().getTime();
+            document.getElementById("kaptchaImage").src = "http://localhost:8080/kaptcha.jpg?" + time;
+        }
+
 </script>
 </body>
 

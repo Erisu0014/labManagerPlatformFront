@@ -64,32 +64,7 @@
                 <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
                 <ul class="layui-nav layui-nav-tree" lay-filter="test">
                     <li class="layui-nav-item layui-nav-itemed">
-                        <a href="user/userShow.html" target="main">用户管理</a>
-                    </li>
-                    <li class="layui-nav-item layui-nav-itemed">
-                        <a class="" href="team/teamShow.html" target="main">团队管理</a>
-                    </li>
-                    <li class="layui-nav-item layui-nav-itemed">
-                        <a class="" href="subject/subjectShow.html" target="main">项目管理</a>
-                    </li>
-                    <li class="layui-nav-item layui-nav-itemed">
                         <a href="introduction/introductionShow.html" target="main">项目简介管理</a>
-                    </li>
-                    <li class="layui-nav-item layui-nav-itemed">
-                        <a href="introduction/introductionShow.html" target="main">成果管理</a>
-                    </li>
-                    <li class="layui-nav-item layui-nav-itemed">
-                        <a class="" href="material/materialShow.html" target="main">资源管理</a>
-                    </li>
-                    <li class="layui-nav-item layui-nav-itemed">
-                        <a class="" href="blog/blogShow.html" target="main">博客管理</a>
-                    </li>
-                    <li class="layui-nav-item layui-nav-itemed">
-                        <a class="" href="logo/logoShow.html" target="main">logo管理</a>
-
-                    </li>
-                    <li class="layui-nav-item layui-nav-itemed">
-                        <a class="" href="log/managerLog.html" target="main">日志管理</a>
                     </li>
                 </ul>
             </div>
@@ -126,16 +101,15 @@
             async: false,
             dataType: "json",
             success: function(data) {
-                //alert(data.info);
+                console.log(data);
                 if(data.info == '404') {
-                    window.location.href = "login/teacherlogin.html";
-                } else {
+                    window.location.href = "../login/managerLogin.html";
+                }else{
                     second();
                 }
             }
         });
     }
-
     var manager;
 
     function second() {
