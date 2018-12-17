@@ -14,12 +14,29 @@
 <script src="../../js/jquery.js"></script>
 <script src="../../js/jquery.cookie.js"></script>
 <script src="../../js/jquery.cookie.js"></script>
-<table class="layui-hide" id="test" lay-filter="test"></table>
-<script type="text/html" id="toolbarDemo">
-    <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" lay-event="getCheckData">添加成果</button>
-        <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+<div class="layui-container">
+
+    <div class="layui-row">
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+            <legend>成果展示</legend>
+        </fieldset>
+        <table class="layui-hide" id="photo" lay-filter="photo"></table>
     </div>
+</div>
+<script type="text/html" id="toolbarDemo">
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckData">添加成果</button>
+        <div class="layui-inline" style="margin-left:80px">
+            <input class="layui-input" id="queryContext" placeholder="请输入项目名">
+        </div>
+        <div class="layui-inline">
+            <button class="layui-btn layui-btn-sm" lay-event="isAll" style="margin: auto">搜索</button>
+        </div>
+
+</script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs layui-btn-primary" lay-even="show">查看</a>
+    <a class="layui-btn layui-btn-xs " lay-even="edit" >编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-even="del" >删除</a>
 </script>
 
 <script>
@@ -27,28 +44,51 @@
         var table = layui.table;
 
         table.render({
-            elem: '#test'
-            ,url:'http://localhost:8080/test_qzs.do'
+            elem: '#photo'
+            ,url:'http://localhost:8080/photograph/showPhoto.do'
             ,where:{
-                labUserCookie: $.cookie("labUserCookie"),sendUrl: window.location.href
+                labUserCookie: $.cookie("labUserCookie")
+                ,sendUrl: window.location.href
             }
             ,toolbar: '#toolbarDemo'
             ,cellMinWidth: 80
-            ,contentType: 'application/json'
+            ,height: 500
             ,cols: [[
-                {field:'photoId',  title: 'ID'}
+                {field:'photoId',  title: 'ID',width:80}
+                ,{field:'subjectId', title: '所属项目',width:200}
                 ,{field:'photoDes',  title: '成果描述'}
-                ,{field:'subjectId', title: '所属项目'}
-                ,{fixed:'right',  title: '操作',toolbar: '#barDemo'}
+                ,{fixed:'right',  title: '操作',toolbar: '#barDemo',width:160}
             ]]
             ,page:true
         });
+        //监听行工具事件
+        table.on('tool(photo)', function(obj){
+            var data = obj.data;
+            var layEvent=obj.event;
+            //console.log(obj)
+            if(layEvent === 'del'){
+                var photoId=data['photoId'];
+                alert("del");
+                $.ajax({
+                    url:"http://localhost:8080/photograph/delPhoto.do",
+                    type:"post",
+                    data:{'photoId':photoId},
+                    success:function(result){
+                        if(result=="success"){
+                            alert("删除成功");
+                            location.reload();
+                        }else {
+                            alert("删除失败");
+                        }
+                    }
+                });
+            } else if(layEvent === 'edit'){
+                alert("edit");
+            }else if(layEvent === 'show'){
+                alert("show");
+            }
+        });
     });
-</script>
-<script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs layui-btn-primary" >查看</a>
-    <a class="layui-btn layui-btn-xs " >编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" >删除</a>
 </script>
 </body>
 <script>
