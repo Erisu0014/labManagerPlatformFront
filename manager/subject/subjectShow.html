@@ -11,7 +11,7 @@
     <link href="../../bootstrap-3.3.7-dist/css/bootstrap.css" rel="stylesheet">
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
     <script type="text/javascript" src="../../js/jquery.min.js"></script>
-    <script type="text/javascript" src="../../js/vue.min.js"></script>
+
 </head>
 
 <body>
@@ -85,16 +85,17 @@
                 ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
                     layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
                     ,groups: 1 //只显示 1 个连续页码
-                    ,limit:2
-                    ,limits:[2, 4, 6, 8, 10,100]
+                    ,limit:10
+                    ,limits:[10,20,30,40,50,60,70,80]
                 }
-                ,page:true
                 ,url: 'http://localhost:8080/subject/subjectsShow.do'
                 ,where: {
                     labUserCookie: $.cookie("labUserCookie"),
                     sendUrl: window.location.href
                 }
                 ,page: true //开启分页
+                // ,limit:5
+                // ,limits:[10,20,30,40,50,60,70,80]
                 ,cols: [[ //表头
                     {field: 'subjectId',width:100, title: '项目ID', sort: true,fixed: 'left'},
                     {field: 'subjectName',width:250, title: '项目名称', sort: true,fixed: 'left',edit:'text   '}
@@ -138,13 +139,29 @@
                         layer.close(index);
                         //向服务端发送删除指令
                     });
-                } else if(layEvent === 'editIntro'){ //编辑
+                } else if(layEvent === 'editIntro'){ //编辑简介
+                    console.log(data.subjectId)
                     //do something
                     //同步更新缓存对应的值
                     // obj.update({
                     //     username: '123'
                     //     ,title: 'xxx'
                     // });
+                    $.ajax({
+                        type: "post",
+                        url: "http://localhost:8080/intro/hasIntro.do",
+                        data:{
+                            labUserCookie: $.cookie("labUserCookie"),
+                            sendUrl: window.location.href,
+                            subjectId:data.subjectId
+                        },
+                        success: function (info) {
+                            if (info == "success") {
+                                window.location.href = "../introduction/introductionEdit.html";
+                                return true;
+                            }
+                        }
+                    });
                 }
             });
 
