@@ -5,139 +5,118 @@
     <title>Title</title>
     <link rel="stylesheet" href="../../css/layui.css">
     <script src="../../layui.js"></script>
+    <script src="../../js/vue.min.js"></script>
+    <script src="../../js/jquery.js"></script>
 </head>
 <body>
-<div class="layui-container">
+<div id="app" >
     <div class="layui-row layui-col-space10">
         <div class="layui-col-md9">
-            <form class="layui-form" action="">
                 <div class="layui-form-item">
                     <label class="layui-form-label">资源名称</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="title" required  lay-verify="required" placeholder="资源名称" autocomplete="off" class="layui-input">
+                        <input type="text" name="materialName" required v-model="materialName" lay-verify="required" placeholder="资源名称" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">资源链接</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="title" required  lay-verify="required" placeholder="资源链接" autocomplete="off" class="layui-input">
+                        <input type="text" name="materialUrl" required  v-model="materialUrl" lay-verify="required" placeholder="资源链接" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">资源类型</label>
-                    <div class="layui-input-inline">
-                        <select name="city" lay-verify="required">
-                            <option value=""></option>
-                            <option value="0">开源工具</option>
-                            <option value="1">期刊论文</option>
-                            <option value="2">教学视频</option>
+                        <select class="layui-form-label-col layui-input-inline" name="assort1" lay-filter="assort1" @change="changeAssort1()" v-model="selectAssort1" lay-verify="required">
+                            <template v-for="assort1 in assort1s" >
+                                <option  :value="assort1.id">{{assort1.assortName}}</option>
+                            </template>
                         </select>
-                    </div>
+                        <select class="layui-form-label-col layui-input-inline" name="assortId"  lay-filter="assort2" v-model="selectAssort2" lay-verify="required">
+                            <template v-for="assort2 in assort2s" >
+                                <option  :value="assort2.id">{{assort2.assortName}}</option>
+                            </template>
+                        </select>
                 </div>
 
                 <div class="layui-form-item layui-form-text">
                     <label class="layui-form-label">资源介绍</label>
                     <div class="layui-input-block">
-                        <textarea name="desc" placeholder="请输入内容" class="layui-textarea"></textarea>
+                        <textarea name="materialDes" v-model="materialDes" placeholder="请输入内容" class="layui-textarea"></textarea>
                     </div>
-                </div>
-                <div class="layui-form-item">
-                    <div class="layui-form-label">图片预览</div>
-                    <button type="button" class="layui-btn" id="materialPic">
-                        <i class="layui-icon">&#xe67c;</i>上传图片
-                    </button>
-                    <button class="layui-btn" id="testListAction">确定上传</button>
-                    <img class="layui-col-md9" id="image"/>
                 </div>
                 <div class="layui-form-item">
                     <div class="layui-input-block">
-                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                        <button class="layui-btn" @click="subbtn()">立即提交</button>
                         <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                     </div>
                 </div>
-            </form>
-        </div>
-
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label text-r">行政区域：</label>
-        <div class="layui-inline">
-            <select class="select" name="ProvinceId" url="/Admin/Area/GetListByParent?id=86" child="CityId" childDataPath="/Admin/Area/GetListByParent" selectValue="310000" promtion="请选择省">
-                <option value="">请选择省</option>
-            </select>
-        </div>
-        <div class="layui-inline">
-            <select class="select" name="CityId" child="DistrictId" childDataPath="/Admin/Area/GetListByParent" selectValue="310100" promtion="请选择市">
-                <option value="">请选择市</option>
-            </select>
         </div>
     </div>
 </div>
 <script>
+    var assorts;
+    var assort2s;
+    $.ajax({
+        url:"http://localhost:8080/getAssorts.do",
+        type:"get",
+        dataType:"json",
+        async:false,
+        success:function(data){
+           assorts=data;
+           console.log(assorts);
+        }
+    });
+    var vue=new Vue({
+        el:"#app",
+        data:{
+            assort1s:assorts,
+            selectAssort1:assorts[0].id,
+            assort2s:assorts[0].assortList,
+            selectAssort2:assorts[0].assortList[0].id,
+            materialName:"",
+            materialUrl:"",
+            materialDes:""
+        },
+        methods:{
+            changeAssort1:function(){
+                for(var i=0;i<assorts.length;i++){
+                    if(assorts[i].id==this.selectAssort1){
+                        this.assort2s=assorts[i].assortList;
+                        this.selectAssort2=this.assort2s[0].id;
+                        console.log(this.assort2s);
+                    }
+                }
+            },
+            subbtn:function(){
+                alert("asdasd");
+                $.ajax({
+                    url:"http://localhost:8080/addMaterial.do",
+                    type:"post",
+                    data:{materialName:this.materialName,materialUrl:this.materialUrl,assortId:this.selectAssort2,materialDes:this.materialDes},
+                    async:false,
+                    success:function(data){
+                        if(data==1){
+                            alert("成功");
+                        }
+                        console.log(data);
+                    }
+                });
+            }
+        }
+    });
     layui.use(['layer', 'form'], function(){
         var layer = layui.layer
             ,form = layui.form;
-        form.on('select(myselect)', function(data){
-            var areaId=(data.value).replaceAll(",","");
-            $.ajax({
-                type: 'POST',
-                url: '/shopInfo/findCity',
-                data: {areaId:areaId},
-                dataType:  'json',
-                success: function(data){
-                    $("#City").html("");
-                    $.each(data, function(key, val) {
-                        var option1 = $("<option>").val(val.areaId).text(val.fullname);
-                        $("#City").append(option1);
-                        form.render('select');
-                    });
-                    $("#City").get(0).selectedIndex=0;
+        form.on('select(assort1)', function(data){
+            console.log(data);
+            var assort2value=data.value;
+            for(let i=0;i<assorts.length;i++){
+                if(assorts[i].id==assort2value){
+                    assort2s=assorts[i].assortList;
                 }
-            });
-        });
-
-    });
-</script>
-<script>
-    layui.use('upload', function(){
-        var upload = layui.upload;
-
-        //执行实例
-        var uploadInst = upload.render({
-            elem: '#materialPic'
-            ,url: 'http://localhost:8080/testUpload.do'
-            ,auto: false //选择文件后不自动上传
-            ,bindAction: '#testListAction' //指向一个按钮触发上传
-            ,choose: function(obj){
-                //将每次选择的文件追加到文件队列
-                var files = obj.pushFile();
-
-                //预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
-                obj.preview(function(index, file, result){
-                    console.log(index); //得到文件索引
-                    console.log(file); //得到文件对象
-                    console.log(result); //得到文件base64编码，比如图片
-
-                    //obj.resetFile(index, file, '123.jpg'); //重命名文件名，layui 2.3.0 开始新增
-                    document.getElementById('image').src = result;
-                    //这里还可以做一些 append 文件列表 DOM 的操作
-
-                    //obj.upload(index, file); //对上传失败的单个文件重新上传，一般在某个事件中使用
-                    //delete files[index]; //删除列表中对应的文件，一般在某个事件中使用
-                });
             }
-        });
-    });
-</script>
-<script>
-    //Demo
-    layui.use('form', function(){
-        var form = layui.form;
-
-        //监听提交
-        form.on('submit(formDemo)', function(data){
-            layer.msg(JSON.stringify(data.field));
-            return false;
+            console.log(assort2s);
+            form.render('select(assort2)');
         });
     });
 </script>
