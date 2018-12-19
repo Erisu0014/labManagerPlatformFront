@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="../../css/layui.css" media="all">
-    <link href="../../bootstrap-3.3.7-dist/css/bootstrap.css" rel="stylesheet">
+    <!--<link href="../../bootstrap-3.3.7-dist/css/bootstrap.css" rel="stylesheet">-->
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
     <script type="text/javascript" src="../../js/jquery.min.js"></script>
 
@@ -134,19 +134,29 @@
                 if(layEvent === 'showPhoto'){ //查看
                     //do somehing
                 } else if(layEvent === 'del'){ //删除
-                    layer.confirm('真的删除行么', function(index){
+                    layer.confirm('真的删除项目么(包括其项目成果和项目简介)', function(index){
                         obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
                         layer.close(index);
-                        //向服务端发送删除指令
+                        $.ajax({
+                            type: "get",
+                            url: "http://localhost:8080/subject/subjectDel.do",
+                            data:{
+                                labUserCookie: $.cookie("labUserCookie"),
+                                sendUrl: window.location.href,
+                                subjectId:data.subjectId
+                            },
+                            success: function (info) {
+                                // console.log(info);
+                                if (info == "success") {
+                                    console.log("已删除");
+                                    return true;
+                                }else if(info=="fail"){
+                                    console.log("删除失败");
+                                }
+                            }
+                        });
                     });
                 } else if(layEvent === 'editIntro'){ //编辑简介
-                    console.log(data.subjectId)
-                    //do something
-                    //同步更新缓存对应的值
-                    // obj.update({
-                    //     username: '123'
-                    //     ,title: 'xxx'
-                    // });
                     $.ajax({
                         type: "post",
                         url: "http://localhost:8080/intro/hasIntro.do",
@@ -156,9 +166,12 @@
                             subjectId:data.subjectId
                         },
                         success: function (info) {
+                            console.log(info);
                             if (info == "success") {
-                                window.location.href = "../introduction/introductionEdit.html";
+                                window.location.href = "../introduction/introductionEdit.html?subjectId="+data.subjectId;
                                 return true;
+                            }else if(info=="fail"){
+                                layer_confirm("当前项目没有简介，是否新建");
                             }
                         }
                     });
@@ -185,6 +198,17 @@
                     }
                 });
             });
+        });
+    }
+    function layer_confirm(msg) {
+        layui.use('layer', function (layer) {
+            layer.confirm(msg, {
+                btn: ['确定','取消'] //按钮
+            },
+                function () {
+                    window.location.href="../introduction/introductionAdd.html";
+                }
+        );
         });
     }
 
