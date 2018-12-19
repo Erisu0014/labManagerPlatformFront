@@ -36,22 +36,20 @@
                             <div class="layui-input-block">
                                 <input type="text" name="introTitle" id="photoDes" class="layui-input" title="成果描述"
                                        placeholder="请输入描述">
-                                <input type="text" name="subjectId" id="subjectId" class="layui-input" title="所属项目"
-                                       placeholder="请选择所属项目">
+                                <!--<input type="text" name="subjectId" id="subjectId" class="layui-input" title="所属项目"
+                                       placeholder="请选择所属项目">-->
                             </div>
                         </div>
-
-                        <!--<div class="layui-form-item">-->
-                            <!--<label class="layui-form-label">课程名</label>-->
-                            <!--<div class="layui-input-inline">-->
-                                <!--<select name="couId" lay-verify="required" lay-search="" title="课程名">-->
-                                    <!--&lt;!&ndash;<option value=""></option>&ndash;&gt;-->
-                                    <!--<template v-for="course in courses">-->
-                                        <!--<option :value="course.couId">{{course.couName}}</option>-->
-                                    <!--</template>-->
-                                <!--</select>-->
-                            <!--</div>-->
-                        <!--</div>-->
+                        <form class="layui-form" action="">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">所属项目</label>
+                                <div class="layui-input-block">
+                                    <select name="subject" id="subject" >
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
                     </div>
 
                     <div id="set2" class="layui-tab-item" style="margin-top: 10px;">
@@ -73,7 +71,7 @@
                     <!--</div>-->
 
                     <div class="layui-input-block " style="margin-top: 60px;">
-                        <button class="layui-btn layui-col-lg-offset4" id="imgSumbmit" type="button" onclick="addPhoto()" @click="addPhoto()" lay-filter="">
+                        <button class="layui-btn layui-col-lg-offset4" id="imgSumbmit" type="button" lay-filter="">
                             立即提交
                         </button>
                         <button type="reset" class="layui-btn layui-btn-primary layui-col-lg-offset5">重置</button>
@@ -84,42 +82,82 @@
     </div>
 
 </div>
-<script>
-    function addPhoto() {
-        var photoDes=$('#photoDes').val();
-        var subjectId=$('#subjectId').val();
-        $.ajax({
-            type:'post'
-            ,url: 'http://localhost:8080/photograph/PhotoOnload.do'
-            ,data:{'photoDes':photoDes,'subjectId':subjectId
-
-            }
-            ,success:function (res) {
-                alert("添加成功");
-            }
-        })
-    }
-</script>
 <script src="../../bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 <script src="../../layui.js" charset="utf-8"></script>
 <script src="../../js/jquery.cookie.js"></script>
 <script>
+    layui.use('form', function(){
+        var form = layui.form;
+        form.render();
+    });
+</script>
+<script>
+    /*$(function(){
+        $.ajax({
+            type:'get'
+            ,url:'http://localhost:8080/photograph/getData.do'
+            ,data: {
+                labUserCookie: $.cookie("labUserCookie"),
+                sendUrl:window.location.href
+            }
+            ,
+            dataType: "json"
+            ,success:function (res) {
+                for ( var i = 0; i <res.length; i++){
+                    $("#subject").append("<option value='"+res[i].subjectId+"'>"+res[i].subjectName+"</option>");
+                }
+            }
+        })
+    });*/
+    function renderForm(){
+        layui.use('form', function(){
+            var form = layui.form();//高版本建议把括号去掉，有的低版本，需要加()
+            form.render();
+        });
+    }
+    window.onload=function(){
+        $.ajax({
+            type:'get'
+            ,url:'http://localhost:8080/photograph/getData.do'
+            ,data: {
+                labUserCookie: $.cookie("labUserCookie"),
+                sendUrl:window.location.href
+            }
+            ,
+            dataType: "json"
+            ,success:function (res) {
+                var form = layui.form;
+                for ( var i = 0; i <res.length; i++){
+                    $("#subject").append("<option value='"+res[i].subjectId+"'>"+res[i].subjectName+"</option>");
+                }
+                form.render();
+            }
+
+        });
+    }
+</script>
+<script>
+    var photoDes;
+    var subjectId;
     layui.use('upload', function(){
         var upload = layui.upload;
-
         //执行实例
         var demoListView = $('.comment-imgbox.refund-img #addImg');
         var uploadInst = upload.render({
             elem: '#test1' //绑定元素
             ,auto:false
-            ,url: 'http://localhost:8080/photograph/PhotoOnload.do' //上传接口
+            ,url:'http://localhost:8080/photograph/PhotoOnload.do?labUserCookie='+$.cookie("labUserCookie")+'&sendUrl='+window.location.href//上传接口
             ,accept:'images'
             ,acceptMime:'image/*' //只显示图片
             ,multiple:'false'
             ,bindAction:'#imgSumbmit'
-            ,where:{
-                labUserCookie: $.cookie("labUserCookie")
-                ,sendUrl: window.location.href
+            ,data:{
+                photoDes:function () {
+                    return $('#photoDes').val();
+                }
+                ,subjectId:function () {
+                    return $('#subject').val();
+                }
             }
             ,choose:function (obj) {
                 //将每次选择的文件追加到文件队列
@@ -140,6 +178,7 @@
             ,done: function(res){
                 console.log(res.code);
                 alert("上传成功");
+
             }
             ,error: function(){
                 //请求异常回调

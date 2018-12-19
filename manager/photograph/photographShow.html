@@ -7,26 +7,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="../../css/layui.css"  media="all">
     <title>Title</title>
+    <style>
+        .laytable-cell-1-photoUrl{  /*最后的pic为字段的field*/
+            height: 100%;
+            max-width: 100%;
+        }
+        .layui-table-cell{
+            height: 80px;
+            line-height: 80px;
+        }
+    </style>
 </head>
 <body>
 
 <script src="../../layui.js"></script>
 <script src="../../js/jquery.js"></script>
 <script src="../../js/jquery.cookie.js"></script>
-<script src="../../js/jquery.cookie.js"></script>
+
 <div class="layui-container">
 
     <div class="layui-row">
         <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
             <legend>成果展示</legend>
         </fieldset>
-        <table class="layui-hide" id="photo" lay-filter="photo"></table>
+        <table class="layui-hide" id="photo" lay-filter="photo" ></table>
     </div>
 </div>
 <script type="text/html" id="toolbarDemo">
         <button class="layui-btn layui-btn-sm" lay-event="addPhoto">添加成果</button>
         <div class="layui-inline" style="margin-left:80px">
-            <input class="layui-input" id="queryContext" placeholder="请输入项目名">
+            <input class="layui-input" id="queryContext" placeholder="请输入成果描述">
         </div>
         <div class="layui-inline">
             <button class="layui-btn layui-btn-sm" lay-event="isAll" style="margin: auto">搜索</button>
@@ -42,8 +52,10 @@
 <script>
     layui.use('table', function(){
         var table = layui.table;
+        var con = {"context":"","condition":""}
         table.render({
             elem: '#photo'
+            ,id:'photoInfo'
             ,url:'http://localhost:8080/photograph/showPhoto.do'
             ,where:{
                 labUserCookie: $.cookie("labUserCookie")
@@ -54,8 +66,9 @@
             ,height: 500
             ,cols: [[
                 {field:'photoId',  title: 'ID',width:80}
-                ,{field:'subjectId', title: '所属项目',width:200}
-                ,{field:'photoDes',  title: '成果描述'}
+                ,{field:'subjectId', title: '所属项目',edit: 'text',width:200}
+                ,{field:'photoDes',  title: '成果描述',edit: 'text'}
+                ,{field: 'photoUrl', title: '预览', width: 150,align:'center',templet:'<div><img src="{{ d.photoUrl}}" style="height: 100%" ></div>'}
                 ,{fixed:'right',align:'center',toolbar: '#rightBar',width:200}
             ]]
             ,page:true
@@ -65,7 +78,23 @@
             var checkStatus = table.checkStatus(obj.config.id);
             switch(obj.event){
                 case 'addPhoto':
-                    window.location.href='introductionAdd.html';
+                    window.location.href='photographAdd.html';
+                    break;
+                case 'isAll':
+                    con.condition = $("#queryCondition").val();
+                    con.context = $("#queryContext").val();
+
+                    table.reload('photoInfo',{
+                        where:{
+                            labUserCookie: $.cookie("labUserCookie"),
+                            sendUrl: window.location.href,
+                            condition: $("#queryCondition").val(),
+                            context : $("#queryContext").val(),
+                        },
+                        page: {
+                            curr: 1,
+                        }
+                    });
                     break;
             };
         });
@@ -75,8 +104,39 @@
             var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
             var tr = obj.tr; //获得当前行 tr 的DOM对象
             var photoId=data['photoId'];
+            var photoDes=data['photoDes'];
+            var photoUrl=data['photoUrl'];
+            var subjectId=data['subjectId'];
             if(layEvent === 'detail'){ //查看
-                //do somehing
+                layui.use('layer', function(){
+                    var $ = layui.jquery;
+                    var layer = layui.layer;
+                    var html='<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;"><img  src='+photoUrl+' style=" width:50%; height:50% " ><br><br>'+photoDes+'<br><br>所属项目：'+subjectId+'</div>'
+                    //示范一个公告层
+                    layer.open({
+                        type: 1
+                        ,title: "成果详情" //不显示标题栏
+                        ,closeBtn: false
+                        ,area: '600px;'
+                        ,shade: 0.8
+                        ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                        ,btn: ['我看完了']
+                        ,btnAlign: 'c'
+                        ,moveType: 1 //拖拽模式，0或者1
+                        ,content: html
+                        ,success: function(layero){
+                            var btn = layero.find('.layui-layer-btn');
+                            
+                        }
+                    });
+                });
+
+                /*document.cookie="photoId="+photoId;
+                document.cookie="photoDes="+photoDes;
+                document.cookie="photoUrl="+photoUrl;
+                document.cookie="subjectId="+subjectId;
+                window.location.href='photographDetail.html';*/
+
             } else if(layEvent === 'del'){ //删除
                 layer.confirm('确定删除么', function(index) {
                     $.ajax({
@@ -101,6 +161,26 @@
             } else if(layEvent === 'edit'){ //编辑
                 //do something
             }
+        });
+        table.on('edit(photo)', function(obj){ //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
+            $.ajax({
+                type: "get",
+                url: "http://localhost:8080/photograph/photoEdit.do",
+                dataType: "json",
+                async: false,
+                data:{
+                    labUserCookie: $.cookie("labUserCookie"),
+                    sendUrl: window.location.href,
+                    photoId:obj.data['photoId'],
+                    photoUrl:obj.data['photoUrl'],
+                    subjectId:obj.data['subjectId'],
+                    photoDes:obj.data['photoDes'],
+                    uid: $.cookie("uid")
+                },
+                success: function(data) {
+                    alert("修改成功");
+                }
+            });
         });
     });
 </script>
