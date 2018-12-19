@@ -1,10 +1,316 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <title>intro</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="Content-Type" content="multipart/form-data; charset=utf-8">
+    <link rel="stylesheet" href="../../css/layui.css" media="all">
+    <!--<link href="../../bootstrap-3.3.7-dist/css/bootstrap.css" rel="stylesheet">-->
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+    <script type="text/javascript" src="../../js/jquery.min.js"></script>
 </head>
 <body>
+<div class="layui-container">
+    <div id="app">
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+            <legend>添加博客</legend>
+        </fieldset>
+        <form enctype="multipart/form-data" id="fm" class="layui-form" lay-filter="introForm">
+            <div class="layui-tab">
 
+                <ul class="layui-tab-title" style="margin-top: 20px;">
+                    <li class="layui-this">基本信息</li>
+                    <li>博客图片</li>
+                    <li>博客正文</li>
+                </ul>
+
+                <div class="layui-tab-content">
+
+                    <div id="set1" class="layui-tab-item layui-show" style="margin-top: 10px;">
+                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 5px;">
+                            <legend>基本信息</legend>
+                        </fieldset>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">博客标题</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="blogName" class="layui-input" title="博客标题"
+                                       placeholder="请输入博客标题">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">所属类别</label>
+                            <div class="layui-input-block">
+                                <select name="subjectId" lay-verify="required" lay-search="" title="项目名">
+                                    <!--<option value=""></option>-->
+                                    <template v-for="category in categories">
+                                        <option :value="category.categoryId">{{category.categoryName}}</option>
+                                    </template>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-form-text">
+                            <label class="layui-form-label" style="width: 100px">博客简介</label>
+                            <div class="layui-input-block">
+                    <textarea placeholder="请输入博客简介" name="blogDes" class="layui-textarea" required
+                              lay-verify="required">
+                    </textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="set2" class="layui-tab-item" style="margin-top: 10px;">
+                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 5px;">
+                            <legend>博客图片</legend>
+                        </fieldset>
+                        <div class="layui-form-item">
+                            <button type="button" class="layui-btn" id="Picdefault">
+                                <i class="layui-icon">&#xe67c;</i>上传默认图
+                            </button>
+                            <input type="text" id="blogPicdefault" name="blogPicdefault" autocomplete="off" class="layui-input" style="display: none">
+                        </div>
+                        <div class="layui-form-item">
+                            <button type="button" class="layui-btn" id="Picbig">
+                                <i class="layui-icon">&#xe67c;</i>上传大图
+                            </button>
+                            <input type="text"id="blogPicbig" name="blogPicbig" autocomplete="off" class="layui-input" style="display: none">
+                        </div>
+                    </div>
+                    <div id="set3" class="layui-tab-item" style="margin-top: 10px;">
+                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                            <legend>博客正文</legend>
+                        </fieldset>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                            <textarea id="blogBody" name="blogBody" style="width:700px;height:300px;">
+                             <!--&lt;strong&gt;HTML内容&lt;/strong&gt;-->
+                             </textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--<div id="icon">-->
+                    <!--<i class="layui-icon layui-icon-loading layui-icon layui-anim layui-anim-rotate layui-anim-loop" style="font-size: 30px; display:none;" id="wait"></i>-->
+                    <!--</div>-->
+
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" id="btn" lay-submit lay-filter="*" type="button">立即提交</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+<script src="../../js/vue.min.js"></script>
+<script src="../../bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+<script src="../../layui.js" charset="utf-8"></script>
+<script src="../../js/jquery.cookie.js"></script>
+<script charset="utf-8" src="../../kindeditor/kindeditor.js"></script>
+<script charset="utf-8" src="../../kindeditor/lang/zh_CN.js"></script>
+<script>
+
+</script>
+<script>
+    //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+    first();
+
+    function first() {
+        $.ajax({
+            type: "get",
+            url: "http://localhost:8080/login/nothing.do",
+            data: {
+                labUserCookie: $.cookie("labUserCookie"),
+                sendUrl: window.location.href
+            },
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                if (data.info == '404') {
+                    window.location.href = "../login/managerLogin.html";
+                } else {
+                    getCatrgories();
+                }
+            }
+        });
+    }
+
+    function getCatrgories() {
+        var subjects;
+        $.ajax({
+            type: "get",
+            url: "http://localhost:8080/subject/subjectsAll.do",
+            data: {
+                labUserCookie: $.cookie("labUserCookie"),
+                sendUrl: window.location.href
+            },
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                if (data.info == '404') {
+                    window.location.href = "../login/managerLogin.html";
+                } else {
+                    subjects = data;
+                }
+            }
+        });
+        var vue = new Vue({
+            el: "#app",
+            data: {
+                subjects: subjects
+            }
+        });
+        formEvent();
+    }
+
+    function formEvent() {
+        layui.use('element', function () {
+            var $ = layui.jquery,
+                element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
+            $('.site-demo-active').on('click', function () {
+                var othis = $(this),
+                    type = othis.data('type');
+                active[type] ? active[type].call(this, othis) : '';
+            });
+        });
+        uploadPic();
+        //kindEditor初始化
+        var callBackPath = 'redirect.html';
+        KindEditor.ready(function (K) {
+            var editor = K.create('#editorBody', {
+                width : "700px",
+                height : "450px",
+                uploadJson: "http://localhost:8080/intro/IntroBodyPicUpload.do?labUserCookie="+$.cookie("labUserCookie"),
+                allowFileManager : true,
+                filePostName: 'file',//跟服务端参数对应
+                afterUpload: function(){this.sync();}, //图片上传后，将上传内容同步到textarea中
+                afterBlur: function(){this.sync();},   ////失去焦点时，将上传内容同步到textarea中
+            });
+        });
+
+        //form表单的信息提交
+        layui.use('form', function () {
+            var form = layui.form;
+            console.log("form event");
+            form.on('submit(*)', function (data) {
+                console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
+                console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+                console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+                $.ajax({
+                    type: "post",
+                    url: "http://localhost:8080/intro/introAdd.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href,
+                    data: $(data.form).serialize(),
+                    success: function (info) {
+                        if (info == "success") {
+                            window.location.href = "../subject/subjectShow.html";
+                            return true;
+                        }
+                    }
+                });
+            });
+            //各种基于事件的操作，下面会有进一步介绍
+        });
+    }
+
+    function uploadPic() {
+        // layer_alert("hello world");
+        layui.use('upload', function () {
+            var upload = layui.upload;
+
+            //执行实例
+            //var demoListView = $('.comment-imgbox.refund-img #addImg');
+            var uploadDefault = upload.render({
+                elem: '#Picdefault' //绑定元素
+                , auto: true
+                , url: "http://localhost:8080/intro/introPicUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href //上传接口
+                , accept: 'images'
+                , acceptMime: 'image/*' //只显示图片
+                , multiple: 'false'
+                // , bindAction: '#btn'
+                , choose: function (obj) {
+                    //将每次选择的文件追加到文件队列
+                    var files = obj.pushFile();
+
+                    //预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
+                    obj.preview(function (index, file, result) {
+                        // console.log(index); //得到文件索引
+                        // console.log(file); //得到文件对象
+                        // console.log(result); //得到文件base64编码，比如图片
+                        //document.getElementById('image').src = result;
+                        //obj.resetFile(index, file, '123.jpg'); //重命名文件名，layui 2.3.0 开始新增
+                        //这里还可以做一些 append 文件列表 DOM 的操作
+                        //obj.upload(index, file); //对上传失败的单个文件重新上传，一般在某个事件中使用
+                        //delete files[index]; //删除列表中对应的文件，一般在某个事件中使用
+                    });
+                }
+                , before: function (obj) { //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                    layer.load(); //上传loading
+                }
+                , done: function (res) {
+                    layer.closeAll('loading'); //关闭loading
+                    $("#introPicdefault").val(res.data);
+                    layer_alert("上传成功");
+                }
+                , error: function () {
+                    layer.closeAll('loading'); //关闭loading
+                    //请求异常回调
+                }
+            });
+            var uploadBig = upload.render({
+                elem: '#Picbig' //绑定元素
+                , auto: true
+                , url: "http://localhost:8080/intro/introPicUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href //上传接口
+                , accept: 'images'
+                , acceptMime: 'image/*' //只显示图片
+                , multiple: 'false'
+                // , bindAction: '#btn'
+                , choose: function (obj) {
+                    //将每次选择的文件追加到文件队列
+                    //var files = obj.pushFile();
+
+                    //预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
+                    obj.preview(function (index, file, result) {
+                        // console.log(index); //得到文件索引
+                        // console.log(file); //得到文件对象
+                        // console.log(result); //得到文件base64编码，比如图片
+                        //document.getElementById('image').src = result;
+                        //obj.resetFile(index, file, '123.jpg'); //重命名文件名，layui 2.3.0 开始新增
+                        //这里还可以做一些 append 文件列表 DOM 的操作
+                        //obj.upload(index, file); //对上传失败的单个文件重新上传，一般在某个事件中使用
+                        //delete files[index]; //删除列表中对应的文件，一般在某个事件中使用
+                    });
+                }
+                , before: function (obj) { //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                    layer.load(); //上传loading
+                }
+                , done: function (res) {
+                    layer.closeAll('loading'); //关闭loading
+                    $("#introPicbig").val(res.data);
+                    layer_alert("上传成功");
+                }
+                , error: function () {
+                    layer.closeAll('loading'); //关闭loading
+                    //请求异常回调
+                }
+            });
+        });
+
+    }
+
+    function layer_alert(msg) {
+        layui.use('layer', function (layer) {
+            layer.alert(msg);
+        });
+    }
+
+</script>
 </body>
 </html>

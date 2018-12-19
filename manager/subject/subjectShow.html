@@ -134,22 +134,32 @@
                 if(layEvent === 'showPhoto'){ //查看
                     //do somehing
                 } else if(layEvent === 'del'){ //删除
-                    layer.confirm('真的删除行么', function(index){
+                    layer.confirm('真的删除项目么(包括其项目成果和项目简介)', function(index){
                         obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
                         layer.close(index);
-                        //向服务端发送删除指令
+                        $.ajax({
+                            type: "get",
+                            url: "http://localhost:8080/subject/subjectDel.do",
+                            data:{
+                                labUserCookie: $.cookie("labUserCookie"),
+                                sendUrl: window.location.href,
+                                subjectId:data.subjectId
+                            },
+                            success: function (info) {
+                                // console.log(info);
+                                if (info == "success") {
+                                    console.log("已删除");
+                                    return true;
+                                }else if(info=="fail"){
+                                    console.log("删除失败");
+                                }
+                            }
+                        });
                     });
                 } else if(layEvent === 'editIntro'){ //编辑简介
-                    //console.log(data.subjectId)
-                    //do something
-                    //同步更新缓存对应的值
-                    // obj.update({
-                    //     username: '123'
-                    //     ,title: 'xxx'
-                    // });
                     $.ajax({
                         type: "post",
-                        url: "http://localhost:8080/introController/hasIntro.do",
+                        url: "http://localhost:8080/intro/hasIntro.do",
                         data:{
                             labUserCookie: $.cookie("labUserCookie"),
                             sendUrl: window.location.href,

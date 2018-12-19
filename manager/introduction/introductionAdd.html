@@ -210,7 +210,7 @@
             var editor = K.create('#editorBody', {
                 width : "700px",
                 height : "450px",
-                uploadJson: "http://localhost:8080/introController/IntroBodyPicUpload.do?labUserCookie="+$.cookie("labUserCookie"),
+                uploadJson: "http://localhost:8080/intro/IntroBodyPicUpload.do?labUserCookie="+$.cookie("labUserCookie"),
                 allowFileManager : true,
                 filePostName: 'file',//跟服务端参数对应
                 afterUpload: function(){this.sync();}, //图片上传后，将上传内容同步到textarea中
@@ -228,11 +228,11 @@
                 console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
                 $.ajax({
                     type: "post",
-                    url: "http://localhost:8080/introController/introAdd.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href,
+                    url: "http://localhost:8080/intro/introAdd.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href,
                     data: $(data.form).serialize(),
                     success: function (info) {
                         if (info == "success") {
-                            window.location.href = "introductionShow.html";
+                            window.location.href = "../subject/subjectShow.html";
                             return true;
                         }
                     }
@@ -247,7 +247,7 @@
     //     $.ajax({
     //         cache : true,
     //         type : "post",
-    //         url : "http://localhost:8080/introController/introAdd.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href,
+    //         url : "http://localhost:8080/intro/introAdd.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href,
     //         /* data : $('#signupForm').serialize(), */ // 你的formid
     //         data : formData,  // 你的formid
     //         async : false,
@@ -281,7 +281,7 @@
             var uploadDefault = upload.render({
                 elem: '#Picdefault' //绑定元素
                 , auto: true
-                , url: "http://localhost:8080/introController/introPicUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href //上传接口
+                , url: "http://localhost:8080/intro/introPicUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href //上传接口
                 , accept: 'images'
                 , acceptMime: 'image/*' //只显示图片
                 , multiple: 'false'
@@ -318,7 +318,7 @@
             var uploadBig = upload.render({
                 elem: '#Picbig' //绑定元素
                 , auto: true
-                , url: "http://localhost:8080/introController/introPicUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href //上传接口
+                , url: "http://localhost:8080/intro/introPicUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href //上传接口
                 , accept: 'images'
                 , acceptMime: 'image/*' //只显示图片
                 , multiple: 'false'
