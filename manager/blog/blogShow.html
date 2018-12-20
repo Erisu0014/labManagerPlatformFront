@@ -99,8 +99,9 @@
                 // ,limits:[10,20,30,40,50,60,70,80]
                 ,cols: [[ //表头
                     {field: 'blogId',width:100, title: '博客ID', sort: true,fixed: 'left'}
-                    ,{field: 'blogName',width:250, title: '博客标题', sort: true,fixed: 'left',edit:'text   '}
-                    ,{field: 'userName',width:100, title: '博主'}
+                    ,{field: 'blogName',width:250, title: '博客标题', sort: true,fixed: 'left',edit:'text'}
+                    ,{field: 'blogPicdefault', title: '预览', width: 150,align:'center',templet:'<div><img src="{{d.blogPicdefault}}" style="height: 100%" ></div>'}
+                    ,{field: 'userName',width:100, title: '博主',edit:'text'}
                     ,{field: 'blogDes',width:100, title: '博客简介',edit:'text'}
                     ,{field: 'categoryName', title: '所属类别'}
                     ,{fixed: 'right', width:200, align:'center', toolbar: '#barDemo'}
@@ -186,17 +187,6 @@
             });
         });
     }
-    // function layer_confirm(msg) {
-    //     layui.use('layer', function (layer) {
-    //         layer.confirm(msg, {
-    //                 btn: ['确定','取消'] //按钮
-    //             },
-    //             function () {
-    //                 window.location.href="blogAdd.html";
-    //             }
-    //         );
-    //     });
-    // }
 
 
 </script>

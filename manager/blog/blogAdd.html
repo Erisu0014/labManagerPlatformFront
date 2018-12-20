@@ -207,11 +207,11 @@
                 console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
                 $.ajax({
                     type: "post",
-                    url: "http://localhost:8080/intro/introAdd.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href,
+                    url: "http://localhost:8080/blog/blogAdd.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href,
                     data: $(data.form).serialize(),
                     success: function (info) {
                         if (info == "success") {
-                            window.location.href = "../subject/subjectShow.html";
+                            window.location.href = "blogShow.html";
                             return true;
                         }
                     }
