@@ -44,7 +44,7 @@
         var table = layui.table;
         table.render({
             elem: '#photo'
-            ,url:'http://localhost:8080/photograph/showPhoto.do'
+            ,url:'http://47.105.187.18/displayPlatform/photograph/showPhoto.do'
             ,where:{
                 labUserCookie: $.cookie("labUserCookie")
                 ,sendUrl: window.location.href
@@ -81,7 +81,7 @@
                 layer.confirm('确定删除么', function(index) {
                     $.ajax({
                         type: 'post'
-                        ,url: 'http://localhost:8080/photograph/delPhoto.do'
+                        ,url: 'http://47.105.187.18/displayPlatform/photograph/delPhoto.do'
 
                         ,data: {'photoId': photoId
                                 ,labUserCookie: $.cookie("labUserCookie")
@@ -109,7 +109,7 @@
 
     $.ajax({
         type: "get",
-        url: "http://localhost:8080/login/nothing.do",
+        url: "http://47.105.187.18/displayPlatform/login/nothing.do",
         data: {
             labUserCookie: $.cookie("labUserCookie"),
             sendUrl:window.location.href

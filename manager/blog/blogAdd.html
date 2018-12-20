@@ -125,7 +125,7 @@
     function first() {
         $.ajax({
             type: "get",
-            url: "http://localhost:8080/login/nothing.do",
+            url: "http://47.105.187.18/displayPlatform/login/nothing.do",
             data: {
                 labUserCookie: $.cookie("labUserCookie"),
                 sendUrl: window.location.href
@@ -147,7 +147,7 @@
         var categories;
         $.ajax({
             type: "get",
-            url: "http://localhost:8080/blog/getCategories.do",
+            url: "http://47.105.187.18/displayPlatform/blog/getCategories.do",
             data: {
                 labUserCookie: $.cookie("labUserCookie"),
                 sendUrl: window.location.href
@@ -189,7 +189,7 @@
             var editor = K.create('#blogBody', {
                 width : "700px",
                 height : "450px",
-                uploadJson: "http://localhost:8080/blog/blogBodyPicUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href,
+                uploadJson: "http://47.105.187.18/displayPlatform/blog/blogBodyPicUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href,
                 allowFileManager : true,
                 filePostName: 'file',//跟服务端参数对应
                 afterUpload: function(){this.sync();}, //图片上传后，将上传内容同步到textarea中
@@ -207,7 +207,7 @@
                 console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
                 $.ajax({
                     type: "post",
-                    url: "http://localhost:8080/blog/blogAdd.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href,
+                    url: "http://47.105.187.18/displayPlatform/blog/blogAdd.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href,
                     data: $(data.form).serialize(),
                     success: function (info) {
                         if (info == "success") {
@@ -232,7 +232,7 @@
             var uploadDefault = upload.render({
                 elem: '#Picdefault' //绑定元素
                 , auto: true
-                , url: "http://localhost:8080/blog/blogPicUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href //上传接口
+                , url: "http://47.105.187.18/displayPlatform/blog/blogPicUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href //上传接口
                 , accept: 'images'
                 , acceptMime: 'image/*' //只显示图片
                 , multiple: 'false'
@@ -269,7 +269,7 @@
             var uploadBig = upload.render({
                 elem: '#Picbig' //绑定元素
                 , auto: true
-                , url: "http://localhost:8080/blog/blogPicUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href //上传接口
+                , url: "http://47.105.187.18/displayPlatform/blog/blogPicUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href //上传接口
                 , accept: 'images'
                 , acceptMime: 'image/*' //只显示图片
                 , multiple: 'false'

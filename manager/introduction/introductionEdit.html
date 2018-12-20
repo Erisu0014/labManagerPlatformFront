@@ -157,7 +157,7 @@
     function first() {
         $.ajax({
             type: "get",
-            url: "http://localhost:8080/login/nothing.do",
+            url: "http://47.105.187.18/displayPlatform/login/nothing.do",
             data: {
                 labUserCookie: $.cookie("labUserCookie"),
                 sendUrl: window.location.href
@@ -181,7 +181,7 @@
 
         $.ajax({
             type: "get",
-            url: "http://localhost:8080/intro/introOld.do",
+            url: "http://47.105.187.18/displayPlatform/intro/introOld.do",
             data: {
                 labUserCookie: $.cookie("labUserCookie"),
                 sendUrl: window.location.href,
@@ -205,7 +205,7 @@
         var subjects;
         $.ajax({
             type: "get",
-            url: "http://localhost:8080/subject/subjectsAll.do",
+            url: "http://47.105.187.18/displayPlatform/subject/subjectsAll.do",
             data: {
                 labUserCookie: $.cookie("labUserCookie"),
                 sendUrl: window.location.href
@@ -242,7 +242,7 @@
             var editor = K.create('#introBody', {
                 width: "700px",
                 height: "450px",
-                uploadJson: "http://localhost:8080/intro/IntroBodyPicUpload.do?labUserCookie=" + $.cookie("labUserCookie")+"&sendUrl="+window.location.href,
+                uploadJson: "http://47.105.187.18/displayPlatform/intro/IntroBodyPicUpload.do?labUserCookie=" + $.cookie("labUserCookie")+"&sendUrl="+window.location.href,
                 allowFileManager: true,
                 filePostName: 'file',//跟服务端参数对应
                 afterUpload: function () {
@@ -284,7 +284,7 @@
                 console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
                 $.ajax({
                     type: "post",
-                    url: "http://localhost:8080/intro/introEdit.do?labUserCookie=" + $.cookie("labUserCookie") + "&sendUrl=" + window.location.href,
+                    url: "http://47.105.187.18/displayPlatform/intro/introEdit.do?labUserCookie=" + $.cookie("labUserCookie") + "&sendUrl=" + window.location.href,
                     data: $(data.form).serialize(),
                     success: function (info) {
                         if (info == "success") {
@@ -311,7 +311,7 @@
                 ,
                 auto: true
                 ,
-                url: "http://localhost:8080/intro/introPicUpload.do?labUserCookie=" + $.cookie("labUserCookie") + "&sendUrl=" + window.location.href //上传接口
+                url: "http://47.105.187.18/displayPlatform/intro/introPicUpload.do?labUserCookie=" + $.cookie("labUserCookie") + "&sendUrl=" + window.location.href //上传接口
                 ,
                 accept: 'images'
                 ,
@@ -358,7 +358,7 @@
                 ,
                 auto: true
                 ,
-                url: "http://localhost:8080/intro/introPicUpload.do?labUserCookie=" + $.cookie("labUserCookie") + "&sendUrl=" + window.location.href //上传接口
+                url: "http://47.105.187.18/displayPlatform/intro/introPicUpload.do?labUserCookie=" + $.cookie("labUserCookie") + "&sendUrl=" + window.location.href //上传接口
                 ,
                 accept: 'images'
                 ,
