@@ -36,7 +36,8 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">博客标题</label>
                             <div class="layui-input-block">
-                                <input type="text" name="blogName" class="layui-input" title="博客标题"
+                                <input type="text" name="blogName" class="layui-input" required
+                                       lay-verify="required" title="博客标题"
                                        placeholder="请输入博客标题">
                             </div>
                         </div>
@@ -44,7 +45,7 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">所属类别</label>
                             <div class="layui-input-block">
-                                <select name="subjectId" lay-verify="required" lay-search="" title="项目名">
+                                <select name="categoryId" lay-verify="required" lay-search="" title="项目名">
                                     <!--<option value=""></option>-->
                                     <template v-for="category in categories">
                                         <option :value="category.categoryId">{{category.categoryName}}</option>
@@ -143,10 +144,10 @@
     }
 
     function getCatrgories() {
-        var subjects;
+        var categories;
         $.ajax({
             type: "get",
-            url: "http://localhost:8080/subject/subjectsAll.do",
+            url: "http://localhost:8080/blog/getCategories.do",
             data: {
                 labUserCookie: $.cookie("labUserCookie"),
                 sendUrl: window.location.href
@@ -158,14 +159,14 @@
                 if (data.info == '404') {
                     window.location.href = "../login/managerLogin.html";
                 } else {
-                    subjects = data;
+                    categories = data;
                 }
             }
         });
         var vue = new Vue({
             el: "#app",
             data: {
-                subjects: subjects
+                categories: categories
             }
         });
         formEvent();
@@ -183,12 +184,12 @@
         });
         uploadPic();
         //kindEditor初始化
-        var callBackPath = 'redirect.html';
+
         KindEditor.ready(function (K) {
-            var editor = K.create('#editorBody', {
+            var editor = K.create('#blogBody', {
                 width : "700px",
                 height : "450px",
-                uploadJson: "http://localhost:8080/intro/IntroBodyPicUpload.do?labUserCookie="+$.cookie("labUserCookie"),
+                uploadJson: "http://localhost:8080/blog/blogBodyPicUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href,
                 allowFileManager : true,
                 filePostName: 'file',//跟服务端参数对应
                 afterUpload: function(){this.sync();}, //图片上传后，将上传内容同步到textarea中
@@ -215,6 +216,7 @@
                         }
                     }
                 });
+                return false;
             });
             //各种基于事件的操作，下面会有进一步介绍
         });
@@ -230,7 +232,7 @@
             var uploadDefault = upload.render({
                 elem: '#Picdefault' //绑定元素
                 , auto: true
-                , url: "http://localhost:8080/intro/introPicUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href //上传接口
+                , url: "http://localhost:8080/blog/blogPicUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href //上传接口
                 , accept: 'images'
                 , acceptMime: 'image/*' //只显示图片
                 , multiple: 'false'
@@ -256,7 +258,7 @@
                 }
                 , done: function (res) {
                     layer.closeAll('loading'); //关闭loading
-                    $("#introPicdefault").val(res.data);
+                    $("#blogPicdefault").val(res.data);
                     layer_alert("上传成功");
                 }
                 , error: function () {
@@ -267,7 +269,7 @@
             var uploadBig = upload.render({
                 elem: '#Picbig' //绑定元素
                 , auto: true
-                , url: "http://localhost:8080/intro/introPicUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href //上传接口
+                , url: "http://localhost:8080/blog/blogPicUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href //上传接口
                 , accept: 'images'
                 , acceptMime: 'image/*' //只显示图片
                 , multiple: 'false'
@@ -293,7 +295,7 @@
                 }
                 , done: function (res) {
                     layer.closeAll('loading'); //关闭loading
-                    $("#introPicbig").val(res.data);
+                    $("#blogPicbig").val(res.data);
                     layer_alert("上传成功");
                 }
                 , error: function () {

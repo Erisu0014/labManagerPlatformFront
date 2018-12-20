@@ -242,7 +242,7 @@
             var editor = K.create('#introBody', {
                 width: "700px",
                 height: "450px",
-                uploadJson: "http://localhost:8080/intro/IntroBodyPicUpload.do?labUserCookie=" + $.cookie("labUserCookie"),
+                uploadJson: "http://localhost:8080/intro/IntroBodyPicUpload.do?labUserCookie=" + $.cookie("labUserCookie")+"&sendUrl="+window.location.href,
                 allowFileManager: true,
                 filePostName: 'file',//跟服务端参数对应
                 afterUpload: function () {

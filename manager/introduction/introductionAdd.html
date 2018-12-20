@@ -210,7 +210,7 @@
             var editor = K.create('#editorBody', {
                 width : "700px",
                 height : "450px",
-                uploadJson: "http://localhost:8080/intro/IntroBodyPicUpload.do?labUserCookie="+$.cookie("labUserCookie"),
+                uploadJson: "http://localhost:8080/intro/IntroBodyPicUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href,
                 allowFileManager : true,
                 filePostName: 'file',//跟服务端参数对应
                 afterUpload: function(){this.sync();}, //图片上传后，将上传内容同步到textarea中
