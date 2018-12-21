@@ -92,23 +92,6 @@
     });
 </script>
 <script>
-    /*$(function(){
-        $.ajax({
-            type:'get'
-            ,url:'http://localhost:8080/photograph/getData.do'
-            ,data: {
-                labUserCookie: $.cookie("labUserCookie"),
-                sendUrl:window.location.href
-            }
-            ,
-            dataType: "json"
-            ,success:function (res) {
-                for ( var i = 0; i <res.length; i++){
-                    $("#subject").append("<option value='"+res[i].subjectId+"'>"+res[i].subjectName+"</option>");
-                }
-            }
-        })
-    });*/
     function renderForm(){
         layui.use('form', function(){
             var form = layui.form();//高版本建议把括号去掉，有的低版本，需要加()
@@ -176,8 +159,13 @@
                 });
             }
             ,done: function(res){
-                console.log(res.code);
-                alert("上传成功");
+                if(res.code=="0"){
+                    alert("上传成功");
+                    window.location.href='photograph/photographShow.html';
+                }else {
+                    alert("请输入成果信息");
+                }
+
 
             }
             ,error: function(){
