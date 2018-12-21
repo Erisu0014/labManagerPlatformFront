@@ -158,21 +158,32 @@
                     //delete files[index]; //删除列表中对应的文件，一般在某个事件中使用
                 });
             }
+            , before: function (obj) { //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                layer.load(); //上传loading
+            }
             ,done: function(res){
                 if(res.code=="0"){
-                    alert("上传成功");
-                    window.location.href='photograph/photographShow.html';
+                    layer.closeAll('loading'); //关闭loading
+                    layer_alert("上传成功");
+                    window.location.href='../photograph/photographShow.html';
                 }else {
-                    alert("请输入成果信息");
+                    layer.closeAll('loading'); //关闭loading
+                    layer_alert("请填写成果信息");
                 }
 
 
             }
             ,error: function(){
+                layer.closeAll('loading'); //关闭loading
                 //请求异常回调
             }
         });
     });
+    function layer_alert(msg) {
+        layui.use('layer', function (layer) {
+            layer.alert(msg);
+        });
+    }
 </script>
 <script>
     //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
