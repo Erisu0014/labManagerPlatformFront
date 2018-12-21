@@ -70,10 +70,18 @@
                         <a class="" href="team/teamShow.html" target="main">团队管理</a>
                     </li>
                     <li class="layui-nav-item layui-nav-itemed">
-                        <a class="" href="subject/subjectShow.html" target="main">项目管理</a>
+                        <a class="" href="javascript:;">项目管理</a>
+                        <dl class="layui-nav-child">
+                            <dd>
+                                <a href="subject/subjectAdd.html" target="main">添加项目</a>
+                            </dd>
+                            <dd>
+                                <a href="subject/subjectShow.html" target="main">项目展示</a>
+                            </dd>
+                        </dl>
                     </li>
                     <li class="layui-nav-item layui-nav-itemed">
-                        <a href="introduction/introductionShow.html" target="main">项目简介管理</a>
+                        <a href="introduction/introductionAdd.html" target="main">项目简介管理</a>
                     </li>
                     <li class="layui-nav-item layui-nav-itemed">
                         <a href="introduction/introductionShow.html" target="main">成果管理</a>
@@ -88,10 +96,9 @@
                     <li class="layui-nav-item layui-nav-itemed">
                         <a class="" href="blog/blogShow.html" target="main">博客管理</a>
                     </li>
-                    <li class="layui-nav-item layui-nav-itemed">
-                        <a class="" href="logo/logoShow.html" target="main">logo管理</a>
-
-                    </li>
+                    <!--<li class="layui-nav-item layui-nav-itemed">-->
+                        <!--<a class="" href="logo/logoShow.html" target="main">logo管理</a>-->
+                    <!--</li>-->
                     <li class="layui-nav-item layui-nav-itemed">
                         <a class="" href="log/managerLog.html" target="main">日志管理</a>
                     </li>
@@ -120,23 +127,24 @@
     first();
 
     function first() {
-        // $.ajax({
-        //     type: "get",
-        //     url: "http://localhost:8080/login/nothing.do",
-        //     data: {
-        //         uid: $.cookie("uid")
-        //     },
-        //     async: false,
-        //     dataType: "json",
-        //     success: function(data) {
-        //         //alert(data.info);
-        //         if(data.info == '404') {
-        //             window.location.href = "login/teacherlogin.html";
-        //         } else {
-        //             second();
-        //         }
-        //     }
-        // });
+        $.ajax({
+            type: "get",
+            url: "http://localhost:8080/login/nothing.do",
+            data: {
+                labUserCookie: $.cookie("labUserCookie"),
+                sendUrl:window.location.href
+            },
+            async: false,
+            dataType: "json",
+            success: function(data) {
+                //alert(data.info);
+                if(data.info == '404') {
+                    window.location.href = "login/managerLogin.html";
+                } else {
+                    second();
+                }
+            }
+        });
     }
 
     var manager;
