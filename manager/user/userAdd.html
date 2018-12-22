@@ -122,7 +122,7 @@
     function first() {
         $.ajax({
             type: "get",
-            url: "http://localhost:8080/login/nothing.do",
+            url: "http://47.105.187.18/displayPlatform/login/nothing.do",
             data: {
                 labUserCookie: $.cookie("labUserCookie"),
                 sendUrl: window.location.href
@@ -150,7 +150,7 @@
             //执行实例
             var uploadInst = upload.render({
                 elem: '#test1' //绑定元素
-                ,url:'http://localhost:8080/user/userOnLoad.do?labUserCookie='+$.cookie("labUserCookie")+'&sendUrl='+window.location.href//上传接口
+                ,url:'http://47.105.187.18/displayPlatform/user/userOnLoad.do?labUserCookie='+$.cookie("labUserCookie")+'&sendUrl='+window.location.href//上传接口
                 ,accept:'images'
                 ,acceptMime:'image/*' //只显示图片
                 ,multiple:'false'
@@ -180,7 +180,7 @@
                     layer_alert("上传成功");
                 }
                 ,error: function(){
-                    layer.closeAll('loading'); //关闭loading
+                    alert("false")
                     //请求异常回调
                 }
             });
@@ -189,6 +189,7 @@
         layui.use('form', function () {
             var layer=layui.layer;
             var form = layui.form;
+            form.render();
             //console.log(team);
             form.on('submit(*)', function (data) {
                 console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
@@ -200,7 +201,7 @@
                 //alert(data.form['userImg'].value)
                 $.ajax({
                     type: "post",
-                    url: "http://localhost:8080/user/userAdd.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href,
+                    url: "http://47.105.187.18/displayPlatform/user/userAdd.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href,
                     data: $(data.form).serialize(),
                     success: function (data) {
                         console.log(data);

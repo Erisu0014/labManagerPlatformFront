@@ -46,7 +46,7 @@
     function first() {
         $.ajax({
             type: "get",
-            url: "http://localhost:8080/login/nothing.do",
+            url: "http://47.105.187.18/displayPlatform/login/nothing.do",
             data: {
                 labUserCookie: $.cookie("labUserCookie"),
                 sendUrl: window.location.href
@@ -83,7 +83,7 @@
                     , limit: 10
                     , limits: [10, 20, 30, 40, 50, 60, 70, 80]
                 }
-                , url: 'http://localhost:8080/user/userShow.do'
+                , url: 'http://47.105.187.18/displayPlatform/user/userShow.do'
                 , where: {
                     labUserCookie: $.cookie("labUserCookie"),
                     sendUrl: window.location.href
@@ -117,7 +117,12 @@
                         align: 'center',
                         templet: '<div><img src="{{ d.userImg}}" style="height: 100%" ></div>'
                     }
-                    , {field: 'userLastDate', width: 150, title: '用户上次登录时间'}
+                    , {
+                        field: 'userLastDate',
+                        width: 200,
+                        title: '用户上次登录时间',
+                        templet: "<div>{{layui.util.toDateString(d.ordertime, 'yyyy-MM-dd HH:mm:ss')}}</div>"
+                    }
                     , {field: 'right', width: 200, align: 'center', toolbar: '#barDemo'}
                 ]]
             });
@@ -156,7 +161,7 @@
                         layer.close(index);
                         $.ajax({
                             type: "get",
-                            url: "http://localhost:8080/user/userDel.do",
+                            url: "http://47.105.187.18/displayPlatform/user/userDel.do",
                             data: {
                                 labUserCookie: $.cookie("labUserCookie"),
                                 sendUrl: window.location.href,
@@ -192,7 +197,7 @@
                 console.log(obj.data['userRole']);
                 $.ajax({
                     type: "get",
-                    url: "http://localhost:8080/user/userEdit.do",
+                    url: "http://47.105.187.18/displayPlatform/user/userEdit.do",
                     dataType: "json",
                     async: false,
                     data: {

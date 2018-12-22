@@ -43,13 +43,14 @@
             </ul>
             <ul class="layui-nav layui-layout-right">
                 <li class="layui-nav-item">
-                    <a href="javascript:;">
-                        卢本伟&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a  id="userName" href="javascript:;">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     </a>
                     <dl class="layui-nav-child">
-                        <dd>
-                            <a href="">修改密码</a>
-                        </dd>
+                        <!--<dd>-->
+                            <!--<a href="">修改密码</a>-->
+                        <!--</dd>-->
+                        <!--如果要加 再解掉注释-->
                         <dd>
                             <a href="" onclick="quit()">安全退出</a>
                         </dd>
@@ -77,13 +78,13 @@
                     <li class="layui-nav-item layui-nav-itemed">
                         <a class="" href="team/teamShow.html" target="main">团队管理</a>
                     </li>
-                    <li class="layui-nav-item layui-nav-itemed">
+                    <li class="layui-nav-item " >
                         <a class="" href="javascript:;">项目管理</a>
                         <dl class="layui-nav-child">
                             <dd>
                                 <a href="subject/subjectAdd.html" target="main">添加项目</a>
                             </dd>
-                            <dd>
+                            <dd >
                                 <a href="subject/subjectShow.html" target="main">项目展示</a>
                             </dd>
                         </dl>
@@ -96,9 +97,21 @@
                     </li>
                     <li class="layui-nav-item layui-nav-itemed">
                         <a class="" href="material/materialShow.html" target="main">资源管理</a>
+                        <dl class="layui-nav-child"> <!-- 二级菜单 -->
+                            <dd><a href="material/materialAdd.html" target="main">资源添加</a></dd>
+                            <dd><a href="material/materialShow.html" target="main">资源浏览</a></dd>
+                        </dl>
                     </li>
-                    <li class="layui-nav-item layui-nav-itemed">
-                        <a class="" href="blog/blogShow.html" target="main">博客管理</a>
+                    <li class="layui-nav-item " >
+                        <a class="" href="javascript:;" target="main">博客管理</a>
+                        <dl class="layui-nav-child">
+                            <dd>
+                                <a href="blog/blogAdd.html" target="main">添加博客</a>
+                            </dd>
+                            <dd>
+                                <a href="blog/blogShow.html" target="main">博客展示</a>
+                            </dd>
+                        </dl>
                     </li>
                     <!--<li class="layui-nav-item layui-nav-itemed">-->
                         <!--<a class="" href="logo/logoShow.html" target="main">logo管理</a>-->
@@ -132,11 +145,11 @@
 <script src="../js/jquery.cookie.js"></script>
 <script>
     first();
-
+    displayName();
     function first() {
         $.ajax({
             type: "get",
-            url: "http://localhost:8080/login/nothing.do",
+            url: "http://47.105.187.18/displayPlatform/login/nothing.do",
             data: {
                 labUserCookie: $.cookie("labUserCookie"),
                 sendUrl:window.location.href
@@ -145,6 +158,7 @@
             dataType: "json",
             success: function(data) {
                 //alert(data.info);
+                console.log(data);
                 if(data.info == '404') {
                     window.location.href = "login/managerLogin.html";
                 } else {
@@ -167,33 +181,57 @@
         });
     }
 
+    function displayName() {
+        var userName ;
+        $.ajax({
+            type: "get",
+            url: "http://47.105.187.18/displayPlatform/user/getNameByCookie.do",
+            data: {
+                labUserCookie: $.cookie("labUserCookie"),
+                sendUrl:window.location.href
+            },
+            async: false,
+            dataType: "json",
+            success: function(data) {
+                userName = data+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+            }
+        });
+        document.getElementById("userName").innerHTML = userName;
+        // $(".userName")不知道为什么修改不了显示不出来 就直接用JS了
+    }
+
+
+
     //JavaScript代码区域
     layui.use('element', function() {
         var element = layui.element;
 
     });
 
-    // function quit() {
-    //     $.ajax({
-    //         type: "get",
-    //         url: "http://localhost:8080/login/quit.do",
-    //         data: {
-    //             uid: $.cookie("uid")
-    //         },
-    //         async: false,
-    //         dataType: "json",
-    //         success: function(data) {
-    //             //alert(data.info);
-    //             if(data.info == '404') {
-    //                 alert(data.info)
-    //                 window.location.href = "../login/managerLogin.html";
-    //             } else {
-    //
-    //                 window.location.href = "../login/managerLogin.html";
-    //             }
-    //         }
-    //     });
-    // }
+    function quit() {
+        console.log("quit");
+        $.ajax({
+            type: "get",
+            url: "http://47.105.187.18/displayPlatform/login/quit.do",
+            data: {
+                //uid: $.cookie("uid") 不知道以前是干嘛用的
+                labUserCookie: $.cookie("labUserCookie"),
+                sendUrl:window.location.href
+            },
+            async: false,
+            dataType: "json",
+            success: function(data) {
+                //alert(data.info);
+                if(data.info == '404') {
+                    alert(data.info)
+                    window.location.href = "../login/managerLogin.html";
+                } else {
+
+                    window.location.href = "../login/managerLogin.html";
+                }
+            }
+        });
+    }
 </script>
 
 </body>
