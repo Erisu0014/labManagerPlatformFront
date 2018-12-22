@@ -221,7 +221,11 @@
             });
         });
     }
-
+    function layer_alert(msg) {
+        layui.use('layer', function (layer) {
+            layer.alert(msg);
+        });
+    }
 
 </script>
 </body>
