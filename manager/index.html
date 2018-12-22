@@ -173,27 +173,25 @@
 
     });
 
-    // function quit() {
-    //     $.ajax({
-    //         type: "get",
-    //         url: "http://47.105.187.18/displayPlatform/login/quit.do",
-    //         data: {
-    //             uid: $.cookie("uid")
-    //         },
-    //         async: false,
-    //         dataType: "json",
-    //         success: function(data) {
-    //             //alert(data.info);
-    //             if(data.info == '404') {
-    //                 alert(data.info)
-    //                 window.location.href = "../login/managerLogin.html";
-    //             } else {
-    //
-    //                 window.location.href = "../login/managerLogin.html";
-    //             }
-    //         }
-    //     });
-    // }
+    function quit() {
+        $.ajax({
+            type: "get",
+            url: "http://47.105.187.18/displayPlatform/login/quit.do",
+            data: {
+                labUserCookie: $.cookie("labUserCookie"),
+                sendUrl:window.location.href
+            },
+            async: false,
+            dataType: "json",
+            success: function(data) {
+                if(data == 'success') {
+                    window.location.href = "login/managerLogin.html";
+                } else {
+                    window.location.href = "login/managerLogin.html";
+                }
+            }
+        });
+    }
 </script>
 
 </body>

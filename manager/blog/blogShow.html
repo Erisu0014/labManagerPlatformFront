@@ -101,7 +101,7 @@
                     {field: 'blogId',width:100, title: '博客ID', sort: true,fixed: 'left'}
                     ,{field: 'blogName',width:250, title: '博客标题', sort: true,fixed: 'left',edit:'text'}
                     ,{field: 'blogPicdefault', title: '预览', width: 150,align:'center',templet:'<div><img src="{{d.blogPicdefault}}" style="height: 100%" ></div>'}
-                    ,{field: 'userName',width:100, title: '博主',edit:'text'}
+                    ,{field: 'userName',width:100, title: '博主'}
                     ,{field: 'blogDes',width:100, title: '博客简介',edit:'text'}
                     ,{field: 'categoryName', title: '所属类别'}
                     ,{fixed: 'right', width:200, align:'center', toolbar: '#barDemo'}
@@ -167,7 +167,7 @@
             table.on('edit(blog)', function(obj){ //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
                 $.ajax({
                     type: "get",
-                    url: "http://47.105.187.18/displayPlatform/blog/blogEdit.do",
+                    url: "http://47.105.187.18/displayPlatform/blog/blogEasyEdit.do",
                     dataType: "json",
                     async: false,
                     data:{
@@ -177,8 +177,7 @@
                         blogName:obj.data['blogName'],
                         userName:obj.data['userName'],
                         blogDes:obj.data['blogDes'],
-                        categoryName:obj.data['categoryName'],
-                        uid: $.cookie("uid")
+                        categoryName:obj.data['categoryName']
                     },
                     success: function(data) {
                         console.log(data);
