@@ -45,7 +45,6 @@
 </script>
 <script type="text/html" id="rightBar">
     <a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
@@ -66,7 +65,7 @@
             ,height: 500
             ,cols: [[
                 {field:'photoId',  title: 'ID',width:80}
-                ,{field:'subjectId', title: '所属项目',edit: 'text',width:200}
+                ,{field:'subjectName', title: '所属项目',width:200}
                 ,{field:'photoDes',  title: '成果描述',edit: 'text'}
                 ,{field: 'photoUrl', title: '预览', width: 150,align:'center',templet:'<div><img src="{{ d.photoUrl}}" style="height: 100%" ></div>'}
                 ,{fixed:'right',align:'center',toolbar: '#rightBar',width:200}
@@ -171,7 +170,7 @@
                     uid: $.cookie("uid")
                 },
                 success: function(data) {
-                    alert("修改成功");
+                    layer_alert("修改成功");
                 }
             });
         });
@@ -196,5 +195,10 @@
             }
         }
     });
+    function layer_alert(msg) {
+        layui.use('layer', function (layer) {
+            layer.alert(msg);
+        });
+    }
 </script>
 </html>
