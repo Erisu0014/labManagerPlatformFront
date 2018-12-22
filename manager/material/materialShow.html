@@ -34,7 +34,7 @@
             width: 4%;
         }
 
-        .page-bar li:first-child>a {
+        .page-bar li:first-child > a {
             margin-left: 0px
         }
 
@@ -59,22 +59,25 @@
         <legend>资料查询</legend>
     </fieldset>
     <div class="layui-form-item">
-        <input type="text" name="title" v-model="keyWord" required  lay-verify="required" placeholder="请输入搜索关键字" autocomplete="off" class="layui-input layui-input-inline">
-        <select class="layui-form-label-col layui-input-inline" name="assort1" lay-filter="assort1" @change="changeAssort1()" v-model="selectAssort1" lay-verify="required">
-            <option  :value="0">请选择</option>
-            <template v-for="assort1 in assort1s" >
-                <option  :value="assort1.id">{{assort1.assortName}}</option>
+        <input type="text" name="title" v-model="keyWord" required lay-verify="required" placeholder="请输入搜索关键字"
+               autocomplete="off" class="layui-input layui-input-inline">
+        <select class="layui-form-label-col layui-input-inline" name="assort1" lay-filter="assort1"
+                @change="changeAssort1()" v-model="selectAssort1" lay-verify="required">
+            <option :value="0">请选择</option>
+            <template v-for="assort1 in assort1s">
+                <option :value="assort1.id">{{assort1.assortName}}</option>
             </template>
         </select>
-        <select class="layui-form-label-col layui-input-inline" name="assortId"  lay-filter="assort2" v-model="selectAssort2" lay-verify="required">
-            <option  :value="0">请选择</option>
-            <template v-for="assort2 in assort2s" >
-                <option  :value="assort2.id">{{assort2.assortName}}</option>
+        <select class="layui-form-label-col layui-input-inline" name="assortId" lay-filter="assort2"
+                v-model="selectAssort2" lay-verify="required">
+            <option :value="0">请选择</option>
+            <template v-for="assort2 in assort2s">
+                <option :value="assort2.id">{{assort2.assortName}}</option>
             </template>
         </select>
         <a class="layui-btn" @click="serchbtn()">搜索</a>
     </div>
-    <table  class="layui-table" >
+    <table class="layui-table">
         <colgroup>
             <col width="150">
             <col width="200">
@@ -90,33 +93,35 @@
             <th>操作</th>
         </tr>
         </thead>
-        <tbody >
-            <template v-for="material in pageMaterials"  v-model="materials">
-                <tr id="tMaterial" >
-                    <td >{{material.materialId}}</td>
-                    <td >{{material.materialName}}</td>
-                    <td >{{material.materialDes}}</td>
-                    <td >{{material.materialUrl}}</td>
-                    <td >{{material.assortName}}</td>
-                    <td >
-                        <a :href="'materialEdit.html?id='+material.materialId" class="layui-btn-radius layui-anim-fadein layui-btn" >修改</a>
-                    </td>
-                </tr>
-            </template>
+        <tbody>
+        <template v-for="material in pageMaterials" v-model="materials">
+            <tr id="tMaterial">
+                <td>{{material.materialId}}</td>
+                <td>{{material.materialName}}</td>
+                <td>{{material.materialDes}}</td>
+                <td>{{material.materialUrl}}</td>
+                <td>{{material.assortName}}</td>
+                <td>
+                    <a :href="'materialEdit.html?id='+material.materialId"
+                       class="layui-btn-radius layui-anim-fadein layui-btn">修改</a>
+                </td>
+            </tr>
+        </template>
         </tbody>
     </table>
     <div class="page-bar">
         <ul>
             <li v-if="showFirst"><a class="layui-icon layui-btn layui-btn-fluid" v-on:click="cur--"><<</a></li>
-            <li v-for="index in indexs" >
-                <a class="layui-icon layui-btn layui-btn-fluid" v-bind:class="{ 'layui-bg-blue': cur == index}" v-on:click="btnClick(index)">{{index}}</a>
+            <li v-for="index in indexs">
+                <a class="layui-icon layui-btn layui-btn-fluid" v-bind:class="{ 'layui-bg-blue': cur == index}"
+                   v-on:click="btnClick(index)">{{index}}</a>
             </li>
             <li v-if="showLast"><a class="layui-icon layui-btn layui-btn-fluid" v-on:click="cur++"> >></a></li>
-            <li style="width:8%"><a class="layui-icon layui-btn layui-bg-blue layui-btn-fluid">共<i >{{all}}</i>页</a></li>
+            <li style="width:8%"><a class="layui-icon layui-btn layui-bg-blue layui-btn-fluid">共<i>{{all}}</i>页</a></li>
         </ul>
     </div>
 </div>
-
+<script src="../../js/jquery.cookie.js"></script>
 <script>
     var materials;
     var assorts;
@@ -124,100 +129,119 @@
     var assortList;
     var pageMaterials;
     $.ajax({
-        url:"http://localhost:8080/getAssorts.do",
-        type:"get",
-        dataType:"json",
-        async:false,
-        success:function(data){
-            assorts=data;
+        url: "http://47.105.187.18/displayPlatform/assort/getAssorts.do",
+        data: {
+            labUserCookie: $.cookie("labUserCookie"),
+            sendUrl: window.location.href
+        },
+        type: "get",
+        dataType: "json",
+        async: false,
+        success: function (data) {
+            assorts = data;
             console.log(assorts);
         }
     });
     $.ajax({
-        url:"http://localhost:8080/getAssortList.do",
-        type:"get",
-        dataType:"json",
-        async:false,
-        success:function(data){
-            assortList=data;
+        url: "http://47.105.187.18/displayPlatform/assort/getAssortList.do",
+        type: "get",
+        dataType: "json",
+        data: {
+            labUserCookie: $.cookie("labUserCookie"),
+            sendUrl: window.location.href
+        },
+        async: false,
+        success: function (data) {
+            assortList = data;
             console.log(assortList);
         }
     });
     $.ajax({
-        url:"http://localhost:8080/getMaterials.do",
-        type:"get",
-        dataType:"json",
-        async:false,
-        success:function(data){
-            for(let i=0;i<data.length;i++){
-                for(let j=0;j<assortList.length;j++){
-                    if(data[i].assortId==assortList[j].id){
-                        data[i].assortName=assortList[j].assortName;
+        url: "http://47.105.187.18/displayPlatform/material/getMaterials.do",
+        type: "get",
+        data: {
+            labUserCookie: $.cookie("labUserCookie"),
+            sendUrl: window.location.href
+        },
+        dataType: "json",
+        async: false,
+        success: function (data) {
+            for (let i = 0; i < data.length; i++) {
+                for (let j = 0; j < assortList.length; j++) {
+                    if (data[i].assortId == assortList[j].id) {
+                        data[i].assortName = assortList[j].assortName;
                     }
                 }
             }
-            materials=data;
+            materials = data;
             console.log(materials);
         }
     });
-    var vue=new Vue({
-        el:"#app",
-        data:{
-            materials:materials,
-            assort1s:assorts,
-            selectAssort1:0,
-            assort2s:assorts[0].assortList,
-            selectAssort2:0,
-            keyWord:"",
+    var vue = new Vue({
+        el: "#app",
+        data: {
+            materials: materials,
+            assort1s: assorts,
+            selectAssort1: 0,
+            assort2s: assorts[0].assortList,
+            selectAssort2: 0,
+            keyWord: "",
             pageMaterials: [],
-            pageRowNum:2,
+            pageRowNum: 2,
             all: 0, //总页数
             cur: 1, //当前页码
+            labUserCookie: $.cookie("labUserCookie"),
+            sendUrl: window.location.href
         },
         created: function () {
-            this.all=Math.ceil((this.materials.length)/this.pageRowNum);
+            this.all = Math.ceil((this.materials.length) / this.pageRowNum);
         },
-        methods:{
-            changeAssort1:function(){
-                for(var i=0;i<assorts.length;i++){
-                    if(assorts[i].id==this.selectAssort1){
-                        this.assort2s=assorts[i].assortList;
-                        this.selectAssort2=this.assort2s[0].id;
+        methods: {
+            changeAssort1: function () {
+                for (var i = 0; i < assorts.length; i++) {
+                    if (assorts[i].id == this.selectAssort1) {
+                        this.assort2s = assorts[i].assortList;
+                        this.selectAssort2 = this.assort2s[0].id;
                         console.log(this.assort2s);
                     }
                 }
             },
-            serchbtn:function(){
+            serchbtn: function () {
                 console.log(this.keyWord);
                 $.ajax({
-                    url:"http://localhost:8080/getMaterial2s.do",
-                    type:"get",
-                    data:{assortId:this.selectAssort2,keyWord:this.keyWord},
-                    dataType:"json",
-                    async:false,
-                    success:function(data){
-                        for(let i=0;i<data.length;i++){
-                            for(let j=0;j<assortList.length;j++){
-                                if(data[i].assortId==assortList[j].id){
-                                    data[i].assortName=assortList[j].assortName;
+                    url: "http://47.105.187.18/displayPlatform/material/getMaterial2s.do",
+                    type: "get",
+                    data: {
+                        assortId: this.selectAssort2,
+                        keyWord: this.keyWord,
+                        labUserCookie: $.cookie("labUserCookie"),
+                        sendUrl: window.location.href
+                    },
+                    dataType: "json",
+                    async: false,
+                    success: function (data) {
+                        for (let i = 0; i < data.length; i++) {
+                            for (let j = 0; j < assortList.length; j++) {
+                                if (data[i].assortId == assortList[j].id) {
+                                    data[i].assortName = assortList[j].assortName;
                                 }
                             }
                         }
-                        vue.materials=data;
+                        vue.materials = data;
                         console.log(vue.materials);
                     }
                 });
-                this.cur=1;
-                this.all=Math.ceil((this.materials.length)/this.pageRowNum);
+                this.cur = 1;
+                this.all = Math.ceil((this.materials.length) / this.pageRowNum);
             },
-            btnClick: function(items) { //页码点击事件
+            btnClick: function (items) { //页码点击事件
                 if (items != this.cur) {
                     this.cur = items;
                 }
             }
         },
         computed: {
-            indexs: function(index) {
+            indexs: function (index) {
                 var left = 1;
                 var right = this.all;
                 var ar = [];
@@ -239,43 +263,37 @@
                     ar.push(left);
                     left++;
                 }
-                this.pageMaterials=[];
-                if(this.materials.length<=0){
-                    this.cur=0;
-                    this.all=0;
+                this.pageMaterials = [];
+                if (this.materials.length <= 0) {
+                    this.cur = 0;
+                    this.all = 0;
                     return ar;
                 }
-                if(this.cur!=this.all)
-                {
-                    for(let i=(this.cur-1)*this.pageRowNum;i<this.cur*this.pageRowNum;i++){
+                if (this.cur != this.all) {
+                    for (let i = (this.cur - 1) * this.pageRowNum; i < this.cur * this.pageRowNum; i++) {
                         this.pageMaterials.push(this.materials[i]);
                     }
-                }
-                else
-                {
-                    var remainder=(this.materials.length)%this.pageRowNum;
-                    if(remainder!=0)
-                    {
-                        for(let i=(this.cur-1)*this.pageRowNum;i<(this.cur-1)*this.pageRowNum+remainder;i++){
+                } else {
+                    var remainder = (this.materials.length) % this.pageRowNum;
+                    if (remainder != 0) {
+                        for (let i = (this.cur - 1) * this.pageRowNum; i < (this.cur - 1) * this.pageRowNum + remainder; i++) {
                             this.pageMaterials.push(this.materials[i]);
                         }
-                    }
-                    else
-                    {
-                        for(let i=(this.cur-1)*this.pageRowNum;i<this.cur*this.pageRowNum;i++){
+                    } else {
+                        for (let i = (this.cur - 1) * this.pageRowNum; i < this.cur * this.pageRowNum; i++) {
                             this.pageMaterials.push(this.materials[i]);
                         }
                     }
                 }
                 return ar;
             },
-            showLast: function() {
+            showLast: function () {
                 if (this.cur == this.all) {
                     return false
                 }
                 return true
             },
-            showFirst: function() {
+            showFirst: function () {
                 if (this.cur == 1) {
                     return false
                 }
@@ -283,7 +301,7 @@
             }
         },
         watch: {
-            cur: function(oldValue, newValue) {
+            cur: function (oldValue, newValue) {
                 console.log(arguments);
             }
         }

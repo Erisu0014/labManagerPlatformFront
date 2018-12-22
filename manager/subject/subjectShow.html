@@ -53,7 +53,7 @@
     function first() {
         $.ajax({
             type: "get",
-            url: "http://localhost:8080/login/nothing.do",
+            url: "http://47.105.187.18/displayPlatform/login/nothing.do",
             data: {
                 labUserCookie: $.cookie("labUserCookie"),
                 sendUrl: window.location.href
@@ -88,7 +88,7 @@
                     ,limit:10
                     ,limits:[10,20,30,40,50,60,70,80]
                 }
-                ,url: 'http://localhost:8080/subject/subjectsShow.do'
+                ,url: 'http://47.105.187.18/displayPlatform/subject/subjectsShow.do'
                 ,where: {
                     labUserCookie: $.cookie("labUserCookie"),
                     sendUrl: window.location.href
@@ -139,7 +139,7 @@
                         layer.close(index);
                         $.ajax({
                             type: "get",
-                            url: "http://localhost:8080/subject/subjectDel.do",
+                            url: "http://47.105.187.18/displayPlatform/subject/subjectDel.do",
                             data:{
                                 labUserCookie: $.cookie("labUserCookie"),
                                 sendUrl: window.location.href,
@@ -159,7 +159,7 @@
                 } else if(layEvent === 'editIntro'){ //编辑简介
                     $.ajax({
                         type: "post",
-                        url: "http://localhost:8080/intro/hasIntro.do",
+                        url: "http://47.105.187.18/displayPlatform/intro/hasIntro.do",
                         data:{
                             labUserCookie: $.cookie("labUserCookie"),
                             sendUrl: window.location.href,
@@ -181,7 +181,7 @@
             table.on('edit(subject)', function(obj){ //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
                 $.ajax({
                     type: "get",
-                    url: "http://localhost:8080/subject/subjectsEdit.do",
+                    url: "http://47.105.187.18/displayPlatform/subject/subjectsEdit.do",
                     dataType: "json",
                     async: false,
                     data:{

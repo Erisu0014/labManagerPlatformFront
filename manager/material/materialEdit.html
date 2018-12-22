@@ -9,7 +9,7 @@
     <script src="../../js/jquery.js"></script>
 </head>
 <body>
-<div id="app" >
+<div id="app">
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
         <legend>资料修改</legend>
     </fieldset>
@@ -19,26 +19,31 @@
                 <label class="layui-form-label">资源名称</label>
                 <div class="layui-input-inline">
                     <template>
-                        <input type="text" :value="material.materialName" name="materialName" required v-model="materialName" lay-verify="required" placeholder="资源名称" autocomplete="off" class="layui-input">
+                        <input type="text" :value="material.materialName" name="materialName" required
+                               v-model="materialName" lay-verify="required" placeholder="资源名称" autocomplete="off"
+                               class="layui-input">
                     </template>
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">资源链接</label>
                 <div class="layui-input-inline">
-                    <input type="text" :value="material.materialUrl" name="materialUrl" required  v-model="materialUrl" lay-verify="required" placeholder="资源链接" autocomplete="off" class="layui-input">
+                    <input type="text" :value="material.materialUrl" name="materialUrl" required v-model="materialUrl"
+                           lay-verify="required" placeholder="资源链接" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">资源类型</label>
-                <select class="layui-form-label-col layui-input-inline" name="assort1" lay-filter="assort1" @change="changeAssort1()" v-model="selectAssort1" lay-verify="required">
-                    <template v-for="assort1 in assort1s" >
-                        <option  :value="assort1.id">{{assort1.assortName}}</option>
+                <select class="layui-form-label-col layui-input-inline" name="assort1" lay-filter="assort1"
+                        @change="changeAssort1()" v-model="selectAssort1" lay-verify="required">
+                    <template v-for="assort1 in assort1s">
+                        <option :value="assort1.id">{{assort1.assortName}}</option>
                     </template>
                 </select>
-                <select class="layui-form-label-col layui-input-inline" name="assortId"  lay-filter="assort2" v-model="selectAssort2" lay-verify="required">
-                    <template v-for="assort2 in assort2s" >
-                        <option  :value="assort2.id">{{assort2.assortName}}</option>
+                <select class="layui-form-label-col layui-input-inline" name="assortId" lay-filter="assort2"
+                        v-model="selectAssort2" lay-verify="required">
+                    <template v-for="assort2 in assort2s">
+                        <option :value="assort2.id">{{assort2.assortName}}</option>
                     </template>
                 </select>
             </div>
@@ -46,7 +51,8 @@
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">资源介绍</label>
                 <div class="layui-input-block">
-                    <textarea name="materialDes" :value="material.materialDes" v-model="materialDes" placeholder="请输入内容" class="layui-textarea"></textarea>
+                    <textarea name="materialDes" :value="material.materialDes" v-model="materialDes" placeholder="请输入内容"
+                              class="layui-textarea"></textarea>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -58,74 +64,95 @@
         </div>
     </div>
 </div>
+<script src="../../js/jquery.cookie.js"></script>
 <script>
-    function getQueryVariable(variable)
-    {
+    function getQueryVariable(variable) {
         var query = window.location.search.substring(1);
         var vars = query.split("&");
-        for (var i=0;i<vars.length;i++) {
+        for (var i = 0; i < vars.length; i++) {
             var pair = vars[i].split("=");
-            if(pair[0] == variable){return pair[1];}
+            if (pair[0] == variable) {
+                return pair[1];
+            }
         }
-        return(false);
+        return (false);
     }
+
     var assorts;
     var assort2s;
     $.ajax({
-        url:"http://localhost:8080/getAssorts.do",
-        type:"get",
-        dataType:"json",
-        async:false,
-        success:function(data){
-            assorts=data;
+        url: "http://47.105.187.18/displayPlatform/assort/getAssorts.do",
+        data:{
+            labUserCookie: $.cookie("labUserCookie"),
+            sendUrl: window.location.href
+        },
+        type: "get",
+        dataType: "json",
+        async: false,
+        success: function (data) {
+            assorts = data;
             console.log(assorts);
         }
     });
     var material;
-    var id=getQueryVariable("id");
+    var id = getQueryVariable("id");
     console.log(id);
     $.ajax({
-        url:"http://localhost:8080/getMaterial.do",
-        type:"get",
-        data:{id:id},
-        dataType:"json",
-        async:false,
-        success:function(data){
-            material=data;
+        url: "http://47.105.187.18/displayPlatform/material/getMaterial.do",
+        type: "get",
+        data: {
+            id: id,
+            labUserCookie: $.cookie("labUserCookie"),
+            sendUrl: window.location.href
+        },
+        dataType: "json",
+        async: false,
+        success: function (data) {
+            material = data;
             console.log(material);
         }
     });
-    var vue=new Vue({
-        el:"#app",
-        data:{
-            assort1s:assorts,
-            selectAssort1:assorts[0].id,
-            assort2s:assorts[0].assortList,
-            selectAssort2:assorts[0].assortList[0].id,
-            materialName:material.materialName,
-            materialUrl:material.materialUrl,
-            materialDes:material.materialDes,
-            materialId:material.materialId,
-            material:material
+    var vue = new Vue({
+        el: "#app",
+        data: {
+            assort1s: assorts,
+            selectAssort1: assorts[0].id,
+            assort2s: assorts[0].assortList,
+            selectAssort2: assorts[0].assortList[0].id,
+            materialName: material.materialName,
+            materialUrl: material.materialUrl,
+            materialDes: material.materialDes,
+            materialId: material.materialId,
+            material: material,
+            labUserCookie: $.cookie("labUserCookie"),
+            sendUrl: window.location.href
         },
-        methods:{
-            changeAssort1:function(){
-                for(var i=0;i<assorts.length;i++){
-                    if(assorts[i].id==this.selectAssort1){
-                        this.assort2s=assorts[i].assortList;
-                        this.selectAssort2=this.assort2s[0].id;
+        methods: {
+            changeAssort1: function () {
+                for (var i = 0; i < assorts.length; i++) {
+                    if (assorts[i].id == this.selectAssort1) {
+                        this.assort2s = assorts[i].assortList;
+                        this.selectAssort2 = this.assort2s[0].id;
                         console.log(this.assort2s);
                     }
                 }
             },
-            subbtn:function(){
+            subbtn: function () {
                 $.ajax({
-                    url:"http://localhost:8080/editMaterial.do",
-                    type:"post",
-                    data:{materialId:this.materialId,materialName:this.materialName,materialUrl:this.materialUrl,assortId:this.selectAssort2,materialDes:this.materialDes},
-                    async:false,
-                    success:function(data){
-                        if(data==1){
+                    url: "http://47.105.187.18/displayPlatform/material/editMaterial.do",
+                    type: "post",
+                    data: {
+                        materialId: this.materialId,
+                        materialName: this.materialName,
+                        materialUrl: this.materialUrl,
+                        assortId: this.selectAssort2,
+                        materialDes: this.materialDes,
+                        labUserCookie: $.cookie("labUserCookie"),
+                        sendUrl: window.location.href
+                    },
+                    async: false,
+                    success: function (data) {
+                        if (data == 1) {
                             alert("成功");
                         }
                         console.log(data);
@@ -134,15 +161,15 @@
             }
         }
     });
-    layui.use(['layer', 'form'], function(){
+    layui.use(['layer', 'form'], function () {
         var layer = layui.layer
-            ,form = layui.form;
-        form.on('select(assort1)', function(data){
+            , form = layui.form;
+        form.on('select(assort1)', function (data) {
             console.log(data);
-            var assort2value=data.value;
-            for(let i=0;i<assorts.length;i++){
-                if(assorts[i].id==assort2value){
-                    assort2s=assorts[i].assortList;
+            var assort2value = data.value;
+            for (let i = 0; i < assorts.length; i++) {
+                if (assorts[i].id == assort2value) {
+                    assort2s = assorts[i].assortList;
                 }
             }
             console.log(assort2s);
