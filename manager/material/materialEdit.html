@@ -11,22 +11,25 @@
 <body>
 <div id="app">
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
-        <legend>资料添加</legend>
+        <legend>资料修改</legend>
     </fieldset>
     <div class="layui-row layui-col-space10">
         <div class="layui-col-md9">
             <div class="layui-form-item">
                 <label class="layui-form-label">资源名称</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="materialName" required v-model="materialName" lay-verify="required"
-                           placeholder="资源名称" autocomplete="off" class="layui-input">
+                    <template>
+                        <input type="text" :value="material.materialName" name="materialName" required
+                               v-model="materialName" lay-verify="required" placeholder="资源名称" autocomplete="off"
+                               class="layui-input">
+                    </template>
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">资源链接</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="materialUrl" required v-model="materialUrl" lay-verify="required"
-                           placeholder="资源链接" autocomplete="off" class="layui-input">
+                    <input type="text" :value="material.materialUrl" name="materialUrl" required v-model="materialUrl"
+                           lay-verify="required" placeholder="资源链接" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
@@ -48,7 +51,7 @@
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">资源介绍</label>
                 <div class="layui-input-block">
-                    <textarea name="materialDes" v-model="materialDes" placeholder="请输入内容"
+                    <textarea name="materialDes" :value="material.materialDes" v-model="materialDes" placeholder="请输入内容"
                               class="layui-textarea"></textarea>
                 </div>
             </div>
@@ -63,11 +66,23 @@
 </div>
 <script src="../../js/jquery.cookie.js"></script>
 <script>
+    function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            if (pair[0] == variable) {
+                return pair[1];
+            }
+        }
+        return (false);
+    }
+
     var assorts;
     var assort2s;
     $.ajax({
         url: "http://47.105.187.18/displayPlatform/assort/getAssorts.do",
-        data: {
+        data:{
             labUserCookie: $.cookie("labUserCookie"),
             sendUrl: window.location.href
         },
@@ -79,6 +94,24 @@
             console.log(assorts);
         }
     });
+    var material;
+    var id = getQueryVariable("id");
+    console.log(id);
+    $.ajax({
+        url: "http://47.105.187.18/displayPlatform/material/getMaterial.do",
+        type: "get",
+        data: {
+            id: id,
+            labUserCookie: $.cookie("labUserCookie"),
+            sendUrl: window.location.href
+        },
+        dataType: "json",
+        async: false,
+        success: function (data) {
+            material = data;
+            console.log(material);
+        }
+    });
     var vue = new Vue({
         el: "#app",
         data: {
@@ -86,9 +119,11 @@
             selectAssort1: assorts[0].id,
             assort2s: assorts[0].assortList,
             selectAssort2: assorts[0].assortList[0].id,
-            materialName: "",
-            materialUrl: "",
-            materialDes: "",
+            materialName: material.materialName,
+            materialUrl: material.materialUrl,
+            materialDes: material.materialDes,
+            materialId: material.materialId,
+            material: material,
             labUserCookie: $.cookie("labUserCookie"),
             sendUrl: window.location.href
         },
@@ -103,11 +138,11 @@
                 }
             },
             subbtn: function () {
-                alert("asdasd");
                 $.ajax({
-                    url: "http://47.105.187.18/displayPlatform/material/addMaterial.do",
+                    url: "http://47.105.187.18/displayPlatform/material/editMaterial.do",
                     type: "post",
                     data: {
+                        materialId: this.materialId,
                         materialName: this.materialName,
                         materialUrl: this.materialUrl,
                         assortId: this.selectAssort2,

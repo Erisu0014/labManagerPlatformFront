@@ -92,23 +92,6 @@
     });
 </script>
 <script>
-    /*$(function(){
-        $.ajax({
-            type:'get'
-            ,url:'http://47.105.187.18/displayPlatform/photograph/getData.do'
-            ,data: {
-                labUserCookie: $.cookie("labUserCookie"),
-                sendUrl:window.location.href
-            }
-            ,
-            dataType: "json"
-            ,success:function (res) {
-                for ( var i = 0; i <res.length; i++){
-                    $("#subject").append("<option value='"+res[i].subjectId+"'>"+res[i].subjectName+"</option>");
-                }
-            }
-        })
-    });*/
     function renderForm(){
         layui.use('form', function(){
             var form = layui.form();//高版本建议把括号去掉，有的低版本，需要加()
@@ -175,16 +158,32 @@
                     //delete files[index]; //删除列表中对应的文件，一般在某个事件中使用
                 });
             }
+            , before: function (obj) { //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                layer.load(); //上传loading
+            }
             ,done: function(res){
-                console.log(res.code);
-                alert("上传成功");
+                if(res.code=="0"){
+                    layer.closeAll('loading'); //关闭loading
+                    layer_alert("上传成功");
+                    window.location.href='../photograph/photographShow.html';
+                }else {
+                    layer.closeAll('loading'); //关闭loading
+                    layer_alert("请填写成果信息");
+                }
+
 
             }
             ,error: function(){
+                layer.closeAll('loading'); //关闭loading
                 //请求异常回调
             }
         });
     });
+    function layer_alert(msg) {
+        layui.use('layer', function (layer) {
+            layer.alert(msg);
+        });
+    }
 </script>
 <script>
     //注意：选项卡 依赖 element 模块，否则无法进行功能性操作

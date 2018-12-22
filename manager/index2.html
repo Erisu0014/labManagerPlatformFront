@@ -47,9 +47,9 @@
                         卢本伟&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     </a>
                     <dl class="layui-nav-child">
-                        <dd>
-                            <a href="">修改密码</a>
-                        </dd>
+                        <!--<dd>-->
+                            <!--<a href="">修改密码</a>-->
+                        <!--</dd>-->
                         <dd>
                             <a href="" onclick="quit()">安全退出</a>
                         </dd>
@@ -64,15 +64,15 @@
                 <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
                 <ul class="layui-nav layui-nav-tree" lay-filter="test">
                     <li class="layui-nav-item layui-nav-itemed">
-                        <a href="introduction/introductionShow.html" target="main">项目简介管理</a>
+                        <a href="introduction/introductionAdd.html" target="main">项目简介管理</a>
                     </li>
                 </ul>
             </div>
         </div>
 
         <div class="layui-body">
-            <!-- 内容主体区域 -->
-            <iframe src="user/userShow.html" name="main" width="100%" height="99%" frameborder="0">
+             <!--内容主体区域-->
+                <iframe src="introduction/introductionAdd.html" name="main" width="100%" height="99%" frameborder="0">
                 您的浏览器不支持iframe，请升级
             </iframe>
 
@@ -89,7 +89,7 @@
 <script src="../js/jquery.cookie.js"></script>
 <script>
     first();
-
+    displayName();
     function first() {
         $.ajax({
             type: "get",
@@ -123,33 +123,55 @@
         });
     }
 
+    function displayName() {
+        var userName ;
+        $.ajax({
+            type: "get",
+            url: "http://47.105.187.18/displayPlatform/user/getNameByCookie.do",
+            data: {
+                labUserCookie: $.cookie("labUserCookie"),
+                sendUrl:window.location.href
+            },
+            async: false,
+            dataType: "json",
+            success: function(data) {
+                userName = data+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+            }
+        });
+        document.getElementById("userName").innerHTML = userName;
+        // $(".userName")不知道为什么修改不了显示不出来 就直接用JS了
+    }
+
     //JavaScript代码区域
     layui.use('element', function() {
         var element = layui.element;
 
     });
 
-    // function quit() {
-    //     $.ajax({
-    //         type: "get",
-    //         url: "http://47.105.187.18/displayPlatform/login/quit.do",
-    //         data: {
-    //             uid: $.cookie("uid")
-    //         },
-    //         async: false,
-    //         dataType: "json",
-    //         success: function(data) {
-    //             //alert(data.info);
-    //             if(data.info == '404') {
-    //                 alert(data.info)
-    //                 window.location.href = "../login/managerLogin.html";
-    //             } else {
-    //
-    //                 window.location.href = "../login/managerLogin.html";
-    //             }
-    //         }
-    //     });
-    // }
+    function quit() {
+        console.log("quit");
+        $.ajax({
+            type: "get",
+            url: "http://47.105.187.18/displayPlatform/login/quit.do",
+            data: {
+                //uid: $.cookie("uid") 不知道以前是干嘛用的
+                labUserCookie: $.cookie("labUserCookie"),
+                sendUrl:window.location.href
+            },
+            async: false,
+            dataType: "json",
+            success: function(data) {
+                //alert(data.info);
+                if(data.info == '404') {
+                    alert(data.info)
+                    window.location.href = "../login/managerLogin.html";
+                } else {
+
+                    window.location.href = "../login/managerLogin.html";
+                }
+            }
+        });
+    }
 </script>
 
 </body>
