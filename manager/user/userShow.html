@@ -117,7 +117,12 @@
                         align: 'center',
                         templet: '<div><img src="{{ d.userImg}}" style="height: 100%" ></div>'
                     }
-                    , {field: 'userLastDate', width: 150, title: '用户上次登录时间'}
+                    , {
+                        field: 'userLastDate',
+                        width: 200,
+                        title: '用户上次登录时间',
+                        templet: "<div>{{layui.util.toDateString(d.ordertime, 'yyyy-MM-dd HH:mm:ss')}}</div>"
+                    }
                     , {field: 'right', width: 200, align: 'center', toolbar: '#barDemo'}
                 ]]
             });
