@@ -78,13 +78,13 @@
                     <li class="layui-nav-item layui-nav-itemed">
                         <a class="" href="team/teamShow.html" target="main">团队管理</a>
                     </li>
-                    <li class="layui-nav-item layui-nav-itemed">
+                    <li class="layui-nav-item " >
                         <a class="" href="javascript:;">项目管理</a>
                         <dl class="layui-nav-child">
                             <dd>
                                 <a href="subject/subjectAdd.html" target="main">添加项目</a>
                             </dd>
-                            <dd>
+                            <dd >
                                 <a href="subject/subjectShow.html" target="main">项目展示</a>
                             </dd>
                         </dl>
@@ -102,8 +102,16 @@
                             <dd><a href="material/materialShow.html" target="main">资源浏览</a></dd>
                         </dl>
                     </li>
-                    <li class="layui-nav-item layui-nav-itemed">
-                        <a class="" href="blog/blogShow.html" target="main">博客管理</a>
+                    <li class="layui-nav-item " >
+                        <a class="" href="javascript:;" target="main">博客管理</a>
+                        <dl class="layui-nav-child">
+                            <dd>
+                                <a href="blog/blogAdd.html" target="main">添加博客</a>
+                            </dd>
+                            <dd>
+                                <a href="blog/blogShow.html" target="main">博客展示</a>
+                            </dd>
+                        </dl>
                     </li>
                     <!--<li class="layui-nav-item layui-nav-itemed">-->
                         <!--<a class="" href="logo/logoShow.html" target="main">logo管理</a>-->
@@ -141,7 +149,7 @@
     function first() {
         $.ajax({
             type: "get",
-            url: "http://localhost:8080/login/nothing.do",
+            url: "http://47.105.187.18/displayPlatform/login/nothing.do",
             data: {
                 labUserCookie: $.cookie("labUserCookie"),
                 sendUrl:window.location.href
@@ -177,7 +185,7 @@
         var userName ;
         $.ajax({
             type: "get",
-            url: "http://localhost:8080/user/getNameByCookie.do",
+            url: "http://47.105.187.18/displayPlatform/user/getNameByCookie.do",
             data: {
                 labUserCookie: $.cookie("labUserCookie"),
                 sendUrl:window.location.href
@@ -204,7 +212,7 @@
         console.log("quit");
         $.ajax({
             type: "get",
-            url: "http://localhost:8080/login/quit.do",
+            url: "http://47.105.187.18/displayPlatform/login/quit.do",
             data: {
                 //uid: $.cookie("uid") 不知道以前是干嘛用的
                 labUserCookie: $.cookie("labUserCookie"),

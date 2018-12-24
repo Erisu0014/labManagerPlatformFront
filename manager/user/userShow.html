@@ -46,7 +46,7 @@
     function first() {
         $.ajax({
             type: "get",
-            url: "http://localhost:8080/login/nothing.do",
+            url: "http://47.105.187.18/displayPlatform/login/nothing.do",
             data: {
                 labUserCookie: $.cookie("labUserCookie"),
                 sendUrl: window.location.href
@@ -83,7 +83,7 @@
                     , limit: 10
                     , limits: [10, 20, 30, 40, 50, 60, 70, 80]
                 }
-                , url: 'http://localhost:8080/user/userShow.do'
+                , url: 'http://47.105.187.18/displayPlatform/user/userShow.do'
                 , where: {
                     labUserCookie: $.cookie("labUserCookie"),
                     sendUrl: window.location.href
@@ -161,7 +161,7 @@
                         layer.close(index);
                         $.ajax({
                             type: "get",
-                            url: "http://localhost:8080/user/userDel.do",
+                            url: "http://47.105.187.18/displayPlatform/user/userDel.do",
                             data: {
                                 labUserCookie: $.cookie("labUserCookie"),
                                 sendUrl: window.location.href,
@@ -197,7 +197,7 @@
                 console.log(obj.data['userRole']);
                 $.ajax({
                     type: "get",
-                    url: "http://localhost:8080/user/userEdit.do",
+                    url: "http://47.105.187.18/displayPlatform/user/userEdit.do",
                     dataType: "json",
                     async: false,
                     data: {

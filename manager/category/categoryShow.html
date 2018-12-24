@@ -51,7 +51,7 @@
         table.render({
             elem: '#category'
             ,id:'categoryInfo'
-            ,url:'http://localhost:8080/category/categoryShow.do'
+            ,url:'http://47.105.187.18/displayPlatform/category/categoryShow.do'
             ,where:{
                 labUserCookie: $.cookie("labUserCookie")
                 ,sendUrl: window.location.href
@@ -105,7 +105,7 @@
                                 var categoryName=$('#categoryName').val();
                                 $.ajax({
                                     type: 'post'
-                                    ,url: 'http://localhost:8080/category/addCategory.do'
+                                    ,url: 'http://47.105.187.18/displayPlatform/category/addCategory.do'
                                     ,data: {
                                         'categorySort': categorySort
                                         ,'categoryName':categoryName
@@ -170,7 +170,7 @@
                 layer.confirm('确定删除么', function(index) {
                     $.ajax({
                         type: 'post'
-                        ,url: 'http://localhost:8080/category/CategoryDel.do'
+                        ,url: 'http://47.105.187.18/displayPlatform/category/CategoryDel.do'
 
                         ,data: {'categoryId': categoryId
                             ,labUserCookie: $.cookie("labUserCookie")
@@ -194,7 +194,7 @@
         table.on('edit(category)', function(obj){ //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
             $.ajax({
                 type: "get",
-                url: "http://localhost:8080/category/CategoryEdit.do",
+                url: "http://47.105.187.18/displayPlatform/category/CategoryEdit.do",
                 dataType: "json",
                 async: false,
                 data:{
@@ -202,8 +202,7 @@
                     sendUrl: window.location.href,
                     categoryId:obj.data['categoryId'],
                     categoryName:obj.data['categoryName'],
-                    categorySort:obj.data['categorySort'],
-                    uid: $.cookie("uid")
+                    categorySort:obj.data['categorySort']
                 },
                 success: function(data) {
                     alert("修改成功");
@@ -217,7 +216,7 @@
 
     $.ajax({
         type: "get",
-        url: "http://localhost:8080/login/nothing.do",
+        url: "http://47.105.187.18/displayPlatform/login/nothing.do",
         data: {
             labUserCookie: $.cookie("labUserCookie"),
             sendUrl:window.location.href
