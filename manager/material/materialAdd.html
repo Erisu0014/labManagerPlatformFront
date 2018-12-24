@@ -68,9 +68,10 @@
     var assorts;
     var assort2s;
     $.ajax({
-        url: "http://localhost:8080/assort/getAssorts.do",
+        url: "http://47.105.187.18/displayPlatform/assort/getAssorts.do",
         data: {
-
+            labUserCookie: $.cookie("labUserCookie"),
+            sendUrl: window.location.href
         },
         type: "get",
         dataType: "json",
@@ -89,7 +90,8 @@
             materialName: "",
             materialUrl: "",
             materialDes: "",
-
+            labUserCookie: $.cookie("labUserCookie"),
+            sendUrl: window.location.href
         },
         methods: {
             changeAssort1: function () {
@@ -102,14 +104,15 @@
             },
             subbtn: function () {
                 $.ajax({
-                    url: "http://localhost:8080/material/addMaterial.do",
+                    url: "http://47.105.187.18/displayPlatform/material/addMaterial.do",
                     type: "post",
                     data: {
                         materialName: this.materialName,
                         materialUrl: this.materialUrl,
                         assortId: this.selectAssort2,
-                        materialDes: this.materialDes
-
+                        materialDes: this.materialDes,
+                        labUserCookie: $.cookie("labUserCookie"),
+                        sendUrl: window.location.href
                     },
                     async: false,
                     success: function (data) {
@@ -139,7 +142,6 @@
                     assort2s = assorts[i].assortList;
                 }
             }
-            console.log(assort2s);
             form.render('select(assort2)');
         });
     });

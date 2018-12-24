@@ -132,9 +132,10 @@
     var assortList;
     var pageMaterials;
     $.ajax({
-        url: "http://localhost:8080/assort/getAssorts.do",
+        url: "http://47.105.187.18/displayPlatform/assort/getAssorts.do",
         data: {
-
+            labUserCookie: $.cookie("labUserCookie"),
+            sendUrl: window.location.href
         },
         type: "get",
         dataType: "json",
@@ -144,11 +145,12 @@
         }
     });
     $.ajax({
-        url: "http://localhost:8080/assort/getAssortList.do",
+        url: "http://47.105.187.18/displayPlatform/assort/getAssortList.do",
         type: "get",
         dataType: "json",
         data: {
-
+            labUserCookie: $.cookie("labUserCookie"),
+            sendUrl: window.location.href
         },
         async: false,
         success: function (data) {
@@ -156,10 +158,11 @@
         }
     });
     $.ajax({
-        url: "http://localhost:8080/material/getMaterials.do",
+        url: "http://47.105.187.18/displayPlatform/material/getMaterials.do",
         type: "get",
         data: {
-
+            labUserCookie: $.cookie("labUserCookie"),
+            sendUrl: window.location.href
         },
         dataType: "json",
         async: false,
@@ -186,8 +189,9 @@
             pageMaterials: [],
             pageRowNum: 2,
             all: 0, //总页数
-            cur: 1 //当前页码
-
+            cur: 1, //当前页码
+            labUserCookie: $.cookie("labUserCookie"),
+            sendUrl: window.location.href
         },
         created: function () {
             this.all = Math.ceil((this.materials.length) / this.pageRowNum);
@@ -204,11 +208,13 @@
             serchbtn: function () {
                 console.log(this.keyWord);
                 $.ajax({
-                    url: "http://localhost:8080/material/getMaterial2s.do",
+                    url: "http://47.105.187.18/displayPlatform/material/getMaterial2s.do",
                     type: "get",
                     data: {
                         assortId: this.selectAssort2,
-                        keyWord: this.keyWord
+                        keyWord: this.keyWord,
+                        labUserCookie: $.cookie("labUserCookie"),
+                        sendUrl: window.location.href
                     },
                     dataType: "json",
                     async: false,
