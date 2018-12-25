@@ -115,6 +115,12 @@
                             <legend>文章主体</legend>
                         </fieldset>
                         <div class="layui-form-item">
+                            <button type="button" class="layui-btn" id="Document">
+                                <i class="layui-icon">&#xe609;</i>上传附件
+                            </button>
+                            <input type="text"id="introDocument" name="introDocument" autocomplete="off" class="layui-input" style="display: none">
+                        </div>
+                        <div class="layui-form-item">
                             <div class="layui-input-block">
                             <textarea id="introBody" name="introBody" style="width:700px;height:300px;">
                              <!--&lt;strong&gt;HTML内容&lt;/strong&gt;-->
@@ -275,7 +281,8 @@
                 "introDes": oldIntro.introDes,
                 "introPicdefault": oldIntro.introPicdefault,
                 "introPicbig": oldIntro.introPicbig,
-                "introBody": oldIntro.introBody
+                "introBody": oldIntro.introBody,
+                "introDocument":oldIntro.introDocument
             });
 
             form.on('submit(*)', function (data) {
@@ -394,6 +401,34 @@
                 }
                 ,
                 error: function () {
+                    layer.closeAll('loading'); //关闭loading
+                    //请求异常回调
+                }
+            });
+            var uploadDocument = upload.render({
+                elem: '#Document' //绑定元素
+                , auto: true
+                , url: "http://47.105.187.18/displayPlatform/intro/introDocumentUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href //上传接口
+                , accept: 'file'
+                , multiple: 'false'
+                // , bindAction: '#btn'
+                , choose: function (obj) {
+                    //将每次选择的文件追加到文件队列
+                    var files = obj.pushFile();
+
+                    //预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
+                    obj.preview(function (index, file, result) {
+                    });
+                }
+                , before: function (obj) { //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                    layer.load(); //上传loading
+                }
+                , done: function (res) {
+                    layer.closeAll('loading'); //关闭loading
+                    $("#introDocument").val(res.data);
+                    layer_alert("上传成功");
+                }
+                , error: function () {
                     layer.closeAll('loading'); //关闭loading
                     //请求异常回调
                 }
