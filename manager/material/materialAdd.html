@@ -33,12 +33,14 @@
                 <label class="layui-form-label">资源类型</label>
                 <select class="layui-form-label-col layui-input-inline" name="assort1" lay-filter="assort1"
                         @change="changeAssort1()" v-model="selectAssort1" lay-verify="required">
+                    <option :value="0">请选择</option>
                     <template v-for="assort1 in assort1s">
                         <option :value="assort1.id">{{assort1.assortName}}</option>
                     </template>
                 </select>
                 <select class="layui-form-label-col layui-input-inline" name="assortId" lay-filter="assort2"
                         v-model="selectAssort2" lay-verify="required">
+                    <option :value="0">请选择</option>
                     <template v-for="assort2 in assort2s">
                         <option :value="assort2.id">{{assort2.assortName}}</option>
                     </template>
@@ -55,7 +57,7 @@
             <div class="layui-form-item">
                 <div class="layui-input-block">
                     <button class="layui-btn" @click="subbtn()">立即提交</button>
-                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    <button type="reset" class="layui-btn layui-btn-primary" @click="reset()">重置</button>
                 </div>
             </div>
         </div>
@@ -76,7 +78,6 @@
         async: false,
         success: function (data) {
             assorts = data;
-            console.log(assorts);
         }
     });
     var vue = new Vue({
@@ -98,12 +99,10 @@
                     if (assorts[i].id == this.selectAssort1) {
                         this.assort2s = assorts[i].assortList;
                         this.selectAssort2 = this.assort2s[0].id;
-                        console.log(this.assort2s);
                     }
                 }
             },
             subbtn: function () {
-                alert("asdasd");
                 $.ajax({
                     url: "http://47.105.187.18/displayPlatform/material/addMaterial.do",
                     type: "post",
@@ -118,11 +117,17 @@
                     async: false,
                     success: function (data) {
                         if (data == 1) {
-                            alert("成功");
+                            window.location.href="materialShow.html";
                         }
-                        console.log(data);
                     }
                 });
+            },
+            reset:function(){
+                this.materialName="";
+                this.materialUrl="";
+                this.materialDes="";
+                this.selectAssort1=0;
+                this.selectAssort2=0;
             }
         }
     });
@@ -137,7 +142,6 @@
                     assort2s = assorts[i].assortList;
                 }
             }
-            console.log(assort2s);
             form.render('select(assort2)');
         });
     });
