@@ -68,7 +68,7 @@
     var assorts;
     var assort2s;
     $.ajax({
-        url: "http://47.105.187.18/displayPlatform/assort/getAssorts.do",
+        url: "http://47.105.187.18/managerPlatform/assort/getAssorts.do",
         data: {
             labUserCookie: $.cookie("labUserCookie"),
             sendUrl: window.location.href
@@ -104,7 +104,7 @@
             },
             subbtn: function () {
                 $.ajax({
-                    url: "http://47.105.187.18/displayPlatform/material/addMaterial.do",
+                    url: "http://47.105.187.18/managerPlatform/material/addMaterial.do",
                     type: "post",
                     data: {
                         materialName: this.materialName,

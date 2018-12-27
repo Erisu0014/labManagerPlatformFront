@@ -48,7 +48,7 @@
 
                     <!--</div>-->
                     <!--<div style="margin-left: 0px;">-->
-                        <!--<img src="http://47.105.187.18/displayPlatform/kaptcha.jpg" id="kaptchaImage" onclick="reloadCode()"-->
+                        <!--<img src="http://47.105.187.18/managerPlatform/kaptcha.jpg" id="kaptchaImage" onclick="reloadCode()"-->
                              <!--title="点击刷新验证码"/>-->
                     <!--</div>-->
                 <!--</div>-->
@@ -87,7 +87,7 @@
                 console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
                 $.ajax({
                     type: "post",
-                    url: "http://47.105.187.18/displayPlatform/login/login.do",
+                    url: "http://47.105.187.18/managerPlatform/login/login.do",
                     data: $(data.form).serialize(),
                     async: false,
                     success: function (data) {
@@ -127,7 +127,7 @@
     });
         function reloadCode() {
             var time = new Date().getTime();
-            document.getElementById("kaptchaImage").src = "http://47.105.187.18/displayPlatform/kaptcha.jpg?" + time;
+            document.getElementById("kaptchaImage").src = "http://47.105.187.18/managerPlatform/kaptcha.jpg?" + time;
         }
 
 </script>

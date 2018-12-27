@@ -55,7 +55,7 @@
         table.render({
             elem: '#photo'
             ,id:'photoInfo'
-            ,url:'http://47.105.187.18/displayPlatform/photograph/showPhoto.do'
+            ,url:'http://47.105.187.18/managerPlatform/photograph/showPhoto.do'
             ,where:{
                 labUserCookie: $.cookie("labUserCookie")
                 ,sendUrl: window.location.href
@@ -133,7 +133,7 @@
                 layer.confirm('确定删除么', function(index) {
                     $.ajax({
                         type: 'post'
-                        ,url: 'http://47.105.187.18/displayPlatform/photograph/delPhoto.do'
+                        ,url: 'http://47.105.187.18/managerPlatform/photograph/delPhoto.do'
 
                         ,data: {'photoId': photoId
                                 ,labUserCookie: $.cookie("labUserCookie")
@@ -157,7 +157,7 @@
         table.on('edit(photo)', function(obj){ //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
             $.ajax({
                 type: "get",
-                url: "http://47.105.187.18/displayPlatform/photograph/photoEdit.do",
+                url: "http://47.105.187.18/managerPlatform/photograph/photoEdit.do",
                 dataType: "json",
                 async: false,
                 data:{
@@ -181,7 +181,7 @@
 
     $.ajax({
         type: "get",
-        url: "http://47.105.187.18/displayPlatform/login/nothing.do",
+        url: "http://47.105.187.18/managerPlatform/login/nothing.do",
         data: {
             labUserCookie: $.cookie("labUserCookie"),
             sendUrl:window.location.href

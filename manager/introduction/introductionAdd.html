@@ -152,7 +152,7 @@
     function first() {
         $.ajax({
             type: "get",
-            url: "http://47.105.187.18/displayPlatform/login/nothing.do",
+            url: "http://47.105.187.18/managerPlatform/login/nothing.do",
             data: {
                 labUserCookie: $.cookie("labUserCookie"),
                 sendUrl: window.location.href
@@ -174,7 +174,7 @@
         var subjects;
         $.ajax({
             type: "get",
-            url: "http://47.105.187.18/displayPlatform/subject/subjectsAll.do",
+            url: "http://47.105.187.18/managerPlatform/subject/subjectsAll.do",
             data: {
                 labUserCookie: $.cookie("labUserCookie"),
                 sendUrl: window.location.href
@@ -216,7 +216,7 @@
             var editor = K.create('#editorBody', {
                 width : "700px",
                 height : "450px",
-                uploadJson: "http://47.105.187.18/displayPlatform/intro/IntroBodyPicUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href,
+                uploadJson: "http://47.105.187.18/managerPlatform/intro/IntroBodyPicUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href,
                 allowFileManager : true,
                 filePostName: 'file',//跟服务端参数对应
                 afterUpload: function(){this.sync();}, //图片上传后，将上传内容同步到textarea中
@@ -234,7 +234,7 @@
                 console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
                 $.ajax({
                     type: "post",
-                    url: "http://47.105.187.18/displayPlatform/intro/introAdd.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href,
+                    url: "http://47.105.187.18/managerPlatform/intro/introAdd.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href,
                     data: $(data.form).serialize(),
                     success: function (info) {
                         if (info == "success") {
@@ -258,7 +258,7 @@
             var uploadDefault = upload.render({
                 elem: '#Picdefault' //绑定元素
                 , auto: true
-                , url: "http://47.105.187.18/displayPlatform/intro/introPicUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href //上传接口
+                , url: "http://47.105.187.18/managerPlatform/intro/introPicUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href //上传接口
                 , accept: 'images'
                 , acceptMime: 'image/*' //只显示图片
                 , multiple: 'false'
@@ -295,7 +295,7 @@
             var uploadBig = upload.render({
                 elem: '#Picbig' //绑定元素
                 , auto: true
-                , url: "http://47.105.187.18/displayPlatform/intro/introPicUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href //上传接口
+                , url: "http://47.105.187.18/managerPlatform/intro/introPicUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href //上传接口
                 , accept: 'images'
                 , acceptMime: 'image/*' //只显示图片
                 , multiple: 'false'
@@ -325,7 +325,7 @@
             var uploadDocument = upload.render({
                 elem: '#Document' //绑定元素
                 , auto: true
-                , url: "http://47.105.187.18/displayPlatform/intro/introDocumentUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href //上传接口
+                , url: "http://47.105.187.18/managerPlatform/intro/introDocumentUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href //上传接口
                 , accept: 'file'
                 , multiple: 'false'
                 // , bindAction: '#btn'

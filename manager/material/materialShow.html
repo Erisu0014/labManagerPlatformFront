@@ -132,7 +132,7 @@
     var assortList;
     var pageMaterials;
     $.ajax({
-        url: "http://47.105.187.18/displayPlatform/assort/getAssorts.do",
+        url: "http://47.105.187.18/managerPlatform/assort/getAssorts.do",
         data: {
             labUserCookie: $.cookie("labUserCookie"),
             sendUrl: window.location.href
@@ -145,7 +145,7 @@
         }
     });
     $.ajax({
-        url: "http://47.105.187.18/displayPlatform/assort/getAssortList.do",
+        url: "http://47.105.187.18/managerPlatform/assort/getAssortList.do",
         type: "get",
         dataType: "json",
         data: {
@@ -158,7 +158,7 @@
         }
     });
     $.ajax({
-        url: "http://47.105.187.18/displayPlatform/material/getMaterials.do",
+        url: "http://47.105.187.18/managerPlatform/material/getMaterials.do",
         type: "get",
         data: {
             labUserCookie: $.cookie("labUserCookie"),
@@ -208,7 +208,7 @@
             serchbtn: function () {
                 console.log(this.keyWord);
                 $.ajax({
-                    url: "http://47.105.187.18/displayPlatform/material/getMaterial2s.do",
+                    url: "http://47.105.187.18/managerPlatform/material/getMaterial2s.do",
                     type: "get",
                     data: {
                         assortId: this.selectAssort2,

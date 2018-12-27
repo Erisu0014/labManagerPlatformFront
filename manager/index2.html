@@ -94,7 +94,7 @@
     function first() {
         $.ajax({
             type: "get",
-            url: "http://47.105.187.18/displayPlatform/login/nothing.do",
+            url: "http://47.105.187.18/managerPlatform/login/nothing.do",
             data: {
                 labUserCookie: $.cookie("labUserCookie"),
                 sendUrl:window.location.href
@@ -128,7 +128,7 @@
         var userName ;
         $.ajax({
             type: "get",
-            url: "http://47.105.187.18/displayPlatform/user/getNameByCookie.do",
+            url: "http://47.105.187.18/managerPlatform/user/getNameByCookie.do",
             data: {
                 labUserCookie: $.cookie("labUserCookie"),
                 sendUrl:window.location.href
@@ -153,7 +153,7 @@
         console.log("quit");
         $.ajax({
             type: "get",
-            url: "http://47.105.187.18/displayPlatform/login/quit.do",
+            url: "http://47.105.187.18/managerPlatform/login/quit.do",
             data: {
                 //uid: $.cookie("uid") 不知道以前是干嘛用的
                 labUserCookie: $.cookie("labUserCookie"),

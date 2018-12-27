@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../css/layui.css">
+    <script src="../../layui.js"></script>
+    <script src="../../js/vue.min.js"></script>
+    <script src="../../js/jquery.js"></script>
+</head>
+<body>
+<div id="app">
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+        <legend>资料类型添加</legend>
+    </fieldset>
+    <div class="layui-row layui-col-space10">
+        <div class="layui-form-item">
+            <label class="layui-form-label">选择父类</label>
+            <select class="layui-form-label-col layui-input-inline" name="assort1" lay-filter="assort1"
+                    v-model="selectAssort1" lay-verify="required">
+                <option :value="0">无</option>
+                <template v-for="assort1 in assort1s">
+                    <option :value="assort1.id">{{assort1.assortName}}</option>
+                </template>
+            </select>
+            <lable style="padding-top:3px">注：如果"选择父类"下拉框选择为"无",那么此次提交添加的类型为父类</lable>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">类型名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="assortName" required v-model="assortName" lay-verify="required"
+                       placeholder="类型名称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" @click="subbtn()">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary" @click="reset()">重置</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../js/jquery.cookie.js"></script>
+<script>
+    var assorts;
+    var assort2s;
+    $.ajax({
+        url: "http://47.105.187.18/displayPlatform/assort/getAssorts.do",
+        data: {
+            labUserCookie: $.cookie("labUserCookie"),
+            sendUrl: window.location.href
+        },
+        type: "get",
+        dataType: "json",
+        async: false,
+        success: function (data) {
+            assorts = data;
+        }
+    });
+    var vue = new Vue({
+        el: "#app",
+        data: {
+            assort1s: assorts,
+            selectAssort1: 0,
+            assort2s: assorts[0].assortList,
+            selectAssort2: assorts[0].assortList[0].id,
+            assortName:""
+        },
+        methods: {
+            subbtn: function () {
+                $.ajax({
+                    url: "http://47.105.187.18/displayPlatform/assort/addAssort.do",
+                    type: "post",
+                    data: {
+                        assortName:vue.assortName,
+                        assortParentid:vue.selectAssort1,
+                        labUserCookie: $.cookie("labUserCookie"),
+                        sendUrl: window.location.href
+                    },
+                    async: false,
+                    success: function (data) {
+                        if (data == 1) {
+                            window.location.href="materialShow.html";
+                        }
+                    }
+                });
+            },
+            reset:function(){
+                this.assortName="";
+                this.selectAssort1=0;
+            }
+        }
+    });
+    layui.use(['layer', 'form'], function () {
+        var layer = layui.layer
+            , form = layui.form;
+        form.on('select(assort1)', function (data) {
+            console.log(data);
+            var assort2value = data.value;
+            for (let i = 0; i < assorts.length; i++) {
+                if (assorts[i].id == assort2value) {
+                    assort2s = assorts[i].assortList;
+                }
+            }
+            form.render('select(assort2)');
+        });
+    });
+</script>
+</body>
+</html>
