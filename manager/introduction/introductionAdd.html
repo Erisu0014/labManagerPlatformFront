@@ -106,6 +106,12 @@
                             <legend>文章主体</legend>
                         </fieldset>
                         <div class="layui-form-item">
+                                <button type="button" class="layui-btn" id="Document">
+                                    <i class="layui-icon">&#xe609;</i>上传附件
+                                </button>
+                            <input type="text"id="introDocument" name="introDocument" autocomplete="off" class="layui-input" style="display: none">
+                        </div>
+                        <div class="layui-form-item">
                             <div class="layui-input-block">
                             <textarea id="editorBody" name="introBody" style="width:700px;height:300px;">
                              <!--&lt;strong&gt;HTML内容&lt;/strong&gt;-->
@@ -146,7 +152,7 @@
     function first() {
         $.ajax({
             type: "get",
-            url: "http://47.105.187.18/displayPlatform/login/nothing.do",
+            url: "http://47.105.187.18/managerPlatform/login/nothing.do",
             data: {
                 labUserCookie: $.cookie("labUserCookie"),
                 sendUrl: window.location.href
@@ -168,7 +174,7 @@
         var subjects;
         $.ajax({
             type: "get",
-            url: "http://47.105.187.18/displayPlatform/subject/subjectsAll.do",
+            url: "http://47.105.187.18/managerPlatform/subject/subjectsAll.do",
             data: {
                 labUserCookie: $.cookie("labUserCookie"),
                 sendUrl: window.location.href
@@ -203,14 +209,14 @@
                 active[type] ? active[type].call(this, othis) : '';
             });
         });
-        uploadPic();
+        uploadSomething();
         //kindEditor初始化
         var callBackPath = 'redirect.html';
         KindEditor.ready(function (K) {
             var editor = K.create('#editorBody', {
                 width : "700px",
                 height : "450px",
-                uploadJson: "http://47.105.187.18/displayPlatform/intro/IntroBodyPicUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href,
+                uploadJson: "http://47.105.187.18/managerPlatform/intro/IntroBodyPicUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href,
                 allowFileManager : true,
                 filePostName: 'file',//跟服务端参数对应
                 afterUpload: function(){this.sync();}, //图片上传后，将上传内容同步到textarea中
@@ -228,7 +234,7 @@
                 console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
                 $.ajax({
                     type: "post",
-                    url: "http://47.105.187.18/displayPlatform/intro/introAdd.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href,
+                    url: "http://47.105.187.18/managerPlatform/intro/introAdd.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href,
                     data: $(data.form).serialize(),
                     success: function (info) {
                         if (info == "success") {
@@ -241,37 +247,8 @@
             //各种基于事件的操作，下面会有进一步介绍
         });
     }
-    // function submitForm() {
-    //     var fd = new FormData();
-    //     var formData = new FormData($( "#fm" )[0]);
-    //     $.ajax({
-    //         cache : true,
-    //         type : "post",
-    //         url : "http://47.105.187.18/displayPlatform/intro/introAdd.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href,
-    //         /* data : $('#signupForm').serialize(), */ // 你的formid
-    //         data : formData,  // 你的formid
-    //         async : false,
-    //         contentType: false,   //jax 中 contentType 设置为 false 是为了避免 JQuery 对其操作，从而失去分界符，而使服务器不能正常解析文件
-    //         processData: false,   //当设置为true的时候,jquery ajax 提交的时候不会序列化 data，而是直接使用data
-    //         error : function(request) {
-    //             layer_alert("网络超时");
-    //         },
-    //         success : function(data) {
-    //             console.log(data);
-    //             if (data.code=="0") {
-    //                 layer_alert("提交成功")
-    //                 //window.location.href="introductionShow.html";
-    //                 //注意这两句
-    //                 // var index = parent.layer.getFrameIndex(window.name);///先得到当前iframe层的索引
-    //                 // parent.layer.close(index);////再执行关闭，保存、修改页面完成时要获取当前页面并关闭回到上级页面（list页面）起到刷新返回功能
-    //             } else {
-    //                 // parent.layer.alert(data.msg)
-    //             }
-    //         }
-    //     });
-    // }
 
-    function uploadPic() {
+    function uploadSomething() {
         // layer_alert("hello world");
         layui.use('upload', function () {
             var upload = layui.upload;
@@ -281,7 +258,7 @@
             var uploadDefault = upload.render({
                 elem: '#Picdefault' //绑定元素
                 , auto: true
-                , url: "http://47.105.187.18/displayPlatform/intro/introPicUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href //上传接口
+                , url: "http://47.105.187.18/managerPlatform/intro/introPicUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href //上传接口
                 , accept: 'images'
                 , acceptMime: 'image/*' //只显示图片
                 , multiple: 'false'
@@ -318,7 +295,7 @@
             var uploadBig = upload.render({
                 elem: '#Picbig' //绑定元素
                 , auto: true
-                , url: "http://47.105.187.18/displayPlatform/intro/introPicUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href //上传接口
+                , url: "http://47.105.187.18/managerPlatform/intro/introPicUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href //上传接口
                 , accept: 'images'
                 , acceptMime: 'image/*' //只显示图片
                 , multiple: 'false'
@@ -329,14 +306,6 @@
 
                     //预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
                     obj.preview(function (index, file, result) {
-                        // console.log(index); //得到文件索引
-                        // console.log(file); //得到文件对象
-                        // console.log(result); //得到文件base64编码，比如图片
-                        //document.getElementById('image').src = result;
-                        //obj.resetFile(index, file, '123.jpg'); //重命名文件名，layui 2.3.0 开始新增
-                        //这里还可以做一些 append 文件列表 DOM 的操作
-                        //obj.upload(index, file); //对上传失败的单个文件重新上传，一般在某个事件中使用
-                        //delete files[index]; //删除列表中对应的文件，一般在某个事件中使用
                     });
                 }
                 , before: function (obj) { //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
@@ -345,6 +314,35 @@
                 , done: function (res) {
                     layer.closeAll('loading'); //关闭loading
                     $("#introPicbig").val(res.data);
+                    layer_alert("上传成功");
+                }
+                , error: function () {
+                    layer.closeAll('loading'); //关闭loading
+                    //请求异常回调
+                }
+            });
+
+            var uploadDocument = upload.render({
+                elem: '#Document' //绑定元素
+                , auto: true
+                , url: "http://47.105.187.18/managerPlatform/intro/introDocumentUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href //上传接口
+                , accept: 'file'
+                , multiple: 'false'
+                // , bindAction: '#btn'
+                , choose: function (obj) {
+                    //将每次选择的文件追加到文件队列
+                    var files = obj.pushFile();
+
+                    //预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
+                    obj.preview(function (index, file, result) {
+                    });
+                }
+                , before: function (obj) { //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                    layer.load(); //上传loading
+                }
+                , done: function (res) {
+                    layer.closeAll('loading'); //关闭loading
+                    $("#introDocument").val(res.data);
                     layer_alert("上传成功");
                 }
                 , error: function () {
@@ -361,7 +359,6 @@
             layer.alert(msg);
         });
     }
-
 </script>
 </body>
 </html>

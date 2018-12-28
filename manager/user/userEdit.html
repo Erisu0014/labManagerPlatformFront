@@ -128,7 +128,7 @@
     function first() {
         $.ajax({
             type: "get",
-            url: "http://47.105.187.18/displayPlatform/login/nothing.do",
+            url: "http://47.105.187.18/managerPlatform/login/nothing.do",
             data: {
                 labUserCookie: $.cookie("labUserCookie"),
                 sendUrl: window.location.href
@@ -151,7 +151,7 @@
         //console.log(userId)
         $.ajax({
             type: "get",
-            url: "http://47.105.187.18/displayPlatform/user/getUserById.do",
+            url: "http://47.105.187.18/managerPlatform/user/getUserById.do",
             data: {
                 labUserCookie: $.cookie("labUserCookie"),
                 sendUrl: window.location.href,
@@ -176,7 +176,7 @@
             //执行实例
             var uploadInst = upload.render({
                 elem: '#test1' //绑定元素
-                ,url:'http://47.105.187.18/displayPlatform/user/userOnLoad.do?labUserCookie='+$.cookie("labUserCookie")+'&sendUrl='+window.location.href//上传接口
+                ,url:'http://47.105.187.18/managerPlatform/user/userOnLoad.do?labUserCookie='+$.cookie("labUserCookie")+'&sendUrl='+window.location.href//上传接口
                 ,accept:'images'
                 ,acceptMime:'image/*' //只显示图片
                 ,multiple:'false'
@@ -240,7 +240,7 @@
                 console.log(data.form['userImg'].value)
                 $.ajax({
                     type: "post",
-                    url: "http://47.105.187.18/displayPlatform/user/editUserImage.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href,
+                    url: "http://47.105.187.18/managerPlatform/user/editUserImage.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href,
                     data: $(data.form).serialize(),
                     success: function (data) {
                         console.log(data);

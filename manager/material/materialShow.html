@@ -51,10 +51,13 @@
             margin: 0px 4px;
             font-size: 12px;
         }
+        [v-cloak]{
+             display: none
+        }
     </style>
 </head>
 <body>
-<div id="app" class="layui-container">
+<div id="app" v-cloak class="layui-container">
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
         <legend>资料查询</legend>
     </fieldset>
@@ -103,7 +106,7 @@
                 <td>{{material.assortName}}</td>
                 <td>
                     <a :href="'materialEdit.html?id='+material.materialId"
-                       class="layui-btn-radius layui-anim-fadein layui-btn">修改</a>
+                       class="layui-anim-fadein layui-btn">修改</a>
                 </td>
             </tr>
         </template>
@@ -129,7 +132,7 @@
     var assortList;
     var pageMaterials;
     $.ajax({
-        url: "http://47.105.187.18/displayPlatform/assort/getAssorts.do",
+        url: "http://47.105.187.18/managerPlatform/assort/getAssorts.do",
         data: {
             labUserCookie: $.cookie("labUserCookie"),
             sendUrl: window.location.href
@@ -139,11 +142,10 @@
         async: false,
         success: function (data) {
             assorts = data;
-            console.log(assorts);
         }
     });
     $.ajax({
-        url: "http://47.105.187.18/displayPlatform/assort/getAssortList.do",
+        url: "http://47.105.187.18/managerPlatform/assort/getAssortList.do",
         type: "get",
         dataType: "json",
         data: {
@@ -153,11 +155,10 @@
         async: false,
         success: function (data) {
             assortList = data;
-            console.log(assortList);
         }
     });
     $.ajax({
-        url: "http://47.105.187.18/displayPlatform/material/getMaterials.do",
+        url: "http://47.105.187.18/managerPlatform/material/getMaterials.do",
         type: "get",
         data: {
             labUserCookie: $.cookie("labUserCookie"),
@@ -174,7 +175,6 @@
                 }
             }
             materials = data;
-            console.log(materials);
         }
     });
     var vue = new Vue({
@@ -202,14 +202,13 @@
                     if (assorts[i].id == this.selectAssort1) {
                         this.assort2s = assorts[i].assortList;
                         this.selectAssort2 = this.assort2s[0].id;
-                        console.log(this.assort2s);
                     }
                 }
             },
             serchbtn: function () {
                 console.log(this.keyWord);
                 $.ajax({
-                    url: "http://47.105.187.18/displayPlatform/material/getMaterial2s.do",
+                    url: "http://47.105.187.18/managerPlatform/material/getMaterial2s.do",
                     type: "get",
                     data: {
                         assortId: this.selectAssort2,
@@ -228,7 +227,6 @@
                             }
                         }
                         vue.materials = data;
-                        console.log(vue.materials);
                     }
                 });
                 this.cur = 1;

@@ -115,6 +115,12 @@
                             <legend>文章主体</legend>
                         </fieldset>
                         <div class="layui-form-item">
+                            <button type="button" class="layui-btn" id="Document">
+                                <i class="layui-icon">&#xe609;</i>上传附件
+                            </button>
+                            <input type="text"id="introDocument" name="introDocument" autocomplete="off" class="layui-input" style="display: none">
+                        </div>
+                        <div class="layui-form-item">
                             <div class="layui-input-block">
                             <textarea id="introBody" name="introBody" style="width:700px;height:300px;">
                              <!--&lt;strong&gt;HTML内容&lt;/strong&gt;-->
@@ -157,7 +163,7 @@
     function first() {
         $.ajax({
             type: "get",
-            url: "http://47.105.187.18/displayPlatform/login/nothing.do",
+            url: "http://47.105.187.18/managerPlatform/login/nothing.do",
             data: {
                 labUserCookie: $.cookie("labUserCookie"),
                 sendUrl: window.location.href
@@ -181,7 +187,7 @@
 
         $.ajax({
             type: "get",
-            url: "http://47.105.187.18/displayPlatform/intro/introOld.do",
+            url: "http://47.105.187.18/managerPlatform/intro/introOld.do",
             data: {
                 labUserCookie: $.cookie("labUserCookie"),
                 sendUrl: window.location.href,
@@ -205,7 +211,7 @@
         var subjects;
         $.ajax({
             type: "get",
-            url: "http://47.105.187.18/displayPlatform/subject/subjectsAll.do",
+            url: "http://47.105.187.18/managerPlatform/subject/subjectsAll.do",
             data: {
                 labUserCookie: $.cookie("labUserCookie"),
                 sendUrl: window.location.href
@@ -242,7 +248,7 @@
             var editor = K.create('#introBody', {
                 width: "700px",
                 height: "450px",
-                uploadJson: "http://47.105.187.18/displayPlatform/intro/IntroBodyPicUpload.do?labUserCookie=" + $.cookie("labUserCookie")+"&sendUrl="+window.location.href,
+                uploadJson: "http://47.105.187.18/managerPlatform/intro/IntroBodyPicUpload.do?labUserCookie=" + $.cookie("labUserCookie")+"&sendUrl="+window.location.href,
                 allowFileManager: true,
                 filePostName: 'file',//跟服务端参数对应
                 afterUpload: function () {
@@ -275,7 +281,8 @@
                 "introDes": oldIntro.introDes,
                 "introPicdefault": oldIntro.introPicdefault,
                 "introPicbig": oldIntro.introPicbig,
-                "introBody": oldIntro.introBody
+                "introBody": oldIntro.introBody,
+                "introDocument":oldIntro.introDocument
             });
 
             form.on('submit(*)', function (data) {
@@ -284,11 +291,11 @@
                 console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
                 $.ajax({
                     type: "post",
-                    url: "http://47.105.187.18/displayPlatform/intro/introEdit.do?labUserCookie=" + $.cookie("labUserCookie") + "&sendUrl=" + window.location.href,
+                    url: "http://47.105.187.18/managerPlatform/intro/introEdit.do?labUserCookie=" + $.cookie("labUserCookie") + "&sendUrl=" + window.location.href,
                     data: $(data.form).serialize(),
                     success: function (info) {
                         if (info == "success") {
-                            window.location.href = "introductionShow.html";
+                            window.location.href = "../subject/subjectShow.html";
                             return true;
                         }
                     }
@@ -311,7 +318,7 @@
                 ,
                 auto: true
                 ,
-                url: "http://47.105.187.18/displayPlatform/intro/introPicUpload.do?labUserCookie=" + $.cookie("labUserCookie") + "&sendUrl=" + window.location.href //上传接口
+                url: "http://47.105.187.18/managerPlatform/intro/introPicUpload.do?labUserCookie=" + $.cookie("labUserCookie") + "&sendUrl=" + window.location.href //上传接口
                 ,
                 accept: 'images'
                 ,
@@ -358,7 +365,7 @@
                 ,
                 auto: true
                 ,
-                url: "http://47.105.187.18/displayPlatform/intro/introPicUpload.do?labUserCookie=" + $.cookie("labUserCookie") + "&sendUrl=" + window.location.href //上传接口
+                url: "http://47.105.187.18/managerPlatform/intro/introPicUpload.do?labUserCookie=" + $.cookie("labUserCookie") + "&sendUrl=" + window.location.href //上传接口
                 ,
                 accept: 'images'
                 ,
@@ -394,6 +401,34 @@
                 }
                 ,
                 error: function () {
+                    layer.closeAll('loading'); //关闭loading
+                    //请求异常回调
+                }
+            });
+            var uploadDocument = upload.render({
+                elem: '#Document' //绑定元素
+                , auto: true
+                , url: "http://47.105.187.18/managerPlatform/intro/introDocumentUpload.do?labUserCookie="+$.cookie("labUserCookie")+"&sendUrl="+window.location.href //上传接口
+                , accept: 'file'
+                , multiple: 'false'
+                // , bindAction: '#btn'
+                , choose: function (obj) {
+                    //将每次选择的文件追加到文件队列
+                    var files = obj.pushFile();
+
+                    //预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
+                    obj.preview(function (index, file, result) {
+                    });
+                }
+                , before: function (obj) { //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                    layer.load(); //上传loading
+                }
+                , done: function (res) {
+                    layer.closeAll('loading'); //关闭loading
+                    $("#introDocument").val(res.data);
+                    layer_alert("上传成功");
+                }
+                , error: function () {
                     layer.closeAll('loading'); //关闭loading
                     //请求异常回调
                 }

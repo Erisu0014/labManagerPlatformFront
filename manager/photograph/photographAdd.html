@@ -35,7 +35,7 @@
                             <label class="layui-form-label">描述</label>
                             <div class="layui-input-block">
                                 <input type="text" name="introTitle" id="photoDes" class="layui-input" title="成果描述"
-                                       placeholder="请输入描述" >
+                                       placeholder="请输入描述">
                                 <!--<input type="text" name="subjectId" id="subjectId" class="layui-input" title="所属项目"
                                        placeholder="请选择所属项目">-->
                             </div>
@@ -109,7 +109,7 @@
     window.onload=function(){
         $.ajax({
             type:'get'
-            ,url:'http://47.105.187.18/displayPlatform/photograph/getData.do'
+            ,url:'http://47.105.187.18/managerPlatform/photograph/getData.do'
             ,data: {
                 labUserCookie: $.cookie("labUserCookie"),
                 sendUrl:window.location.href
@@ -137,8 +137,7 @@
         var uploadInst = upload.render({
             elem: '#test1' //绑定元素
             ,auto:false
-            ,url:'http://47.105.187.18/displayPlatform/photograph/PhotoOnload.do?labUserCookie='+$.cookie("labUserCookie")+'&sendUrl='+window.location.href//上传接口
-            //,url:'http://localhost:8080/photograph/PhotoOnload.do?labUserCookie='+$.cookie("labUserCookie")+'&sendUrl='+window.location.href
+            ,url:'http://47.105.187.18/managerPlatform/photograph/PhotoOnload.do?labUserCookie='+$.cookie("labUserCookie")+'&sendUrl='+window.location.href//上传接口
             ,accept:'images'
             ,acceptMime:'image/*' //只显示图片
             ,multiple:'false'
@@ -174,12 +173,10 @@
                 layer.load(); //上传loading
             }
             ,done: function(res){
-                console.log(res);
                 if(res.code=="0"){
                     layer.closeAll('loading'); //关闭loading
-                    console.log($('#photoDes').val());
                     layer_alert("上传成功");
-                    //window.location.href='../photograph/photographShow.html';
+                    window.location.href='../photograph/photographShow.html';
                 }else {
                     layer.closeAll('loading'); //关闭loading
                     layer_alert("请填写成果描述及所属项目");

@@ -92,7 +92,7 @@
                     <li class="layui-nav-item layui-nav-itemed">
                         <a href="introduction/introductionAdd.html" target="main">项目简介管理</a>
                     </li>
-                    <li class="layui-nav-item layui-nav-itemed">
+                    <li class="layui-nav-item">
                         <a href="photograph/photographShow.html" target="main">成果管理</a>
                     </li>
                     <li class="layui-nav-item layui-nav-itemed">
@@ -100,6 +100,8 @@
                         <dl class="layui-nav-child"> <!-- 二级菜单 -->
                             <dd><a href="material/materialAdd.html" target="main">资源添加</a></dd>
                             <dd><a href="material/materialShow.html" target="main">资源浏览</a></dd>
+                            <dd><a href="material/assortAdd.html" target="main">资源类型添加</a></dd>
+                            <dd><a href="material/assortEdit.html" target="main">资源类型修改</a></dd>
                         </dl>
                     </li>
                     <li class="layui-nav-item " >
@@ -149,7 +151,7 @@
     function first() {
         $.ajax({
             type: "get",
-            url: "http://47.105.187.18/displayPlatform/login/nothing.do",
+            url: "http://47.105.187.18/managerPlatform/login/nothing.do",
             data: {
                 labUserCookie: $.cookie("labUserCookie"),
                 sendUrl:window.location.href
@@ -185,7 +187,7 @@
         var userName ;
         $.ajax({
             type: "get",
-            url: "http://47.105.187.18/displayPlatform/user/getNameByCookie.do",
+            url: "http://47.105.187.18/managerPlatform/user/getNameByCookie.do",
             data: {
                 labUserCookie: $.cookie("labUserCookie"),
                 sendUrl:window.location.href
@@ -212,7 +214,7 @@
         console.log("quit");
         $.ajax({
             type: "get",
-            url: "http://47.105.187.18/displayPlatform/login/quit.do",
+            url: "http://47.105.187.18/managerPlatform/login/quit.do",
             data: {
                 //uid: $.cookie("uid") 不知道以前是干嘛用的
                 labUserCookie: $.cookie("labUserCookie"),

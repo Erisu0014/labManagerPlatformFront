@@ -59,7 +59,7 @@
     function first() {
         $.ajax({
             type: "get",
-            url: "http://47.105.187.18/displayPlatform/login/nothing.do",
+            url: "http://47.105.187.18/managerPlatform/login/nothing.do",
             data: {
                 labUserCookie: $.cookie("labUserCookie"),
                 sendUrl: window.location.href
@@ -94,7 +94,7 @@
                     ,limit:10
                     ,limits:[10,20,30,40,50,60,70,80]
                 }
-                ,url: 'http://47.105.187.18/displayPlatform/blog/blogShow.do'
+                ,url: 'http://47.105.187.18/managerPlatform/blog/blogShow.do'
                 ,where: {
                     labUserCookie: $.cookie("labUserCookie"),
                     sendUrl: window.location.href
@@ -147,7 +147,7 @@
                         layer.close(index);
                         $.ajax({
                             type: "get",
-                            url: "http://47.105.187.18/displayPlatform/blog/blogDel.do",
+                            url: "http://47.105.187.18/managerPlatform/blog/blogDel.do",
                             data:{
                                 labUserCookie: $.cookie("labUserCookie"),
                                 sendUrl: window.location.href,
@@ -172,7 +172,7 @@
             table.on('edit(blog)', function(obj){ //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
                 $.ajax({
                     type: "get",
-                    url: "http://47.105.187.18/displayPlatform/blog/blogEasyEdit.do",
+                    url: "http://47.105.187.18/managerPlatform/blog/blogEasyEdit.do",
                     dataType: "json",
                     async: false,
                     data:{
