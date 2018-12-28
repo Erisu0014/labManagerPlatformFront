@@ -35,7 +35,7 @@
                             <label class="layui-form-label">描述</label>
                             <div class="layui-input-block">
                                 <input type="text" name="introTitle" id="photoDes" class="layui-input" title="成果描述"
-                                       placeholder="请输入描述">
+                                       placeholder="请输入描述" >
                                 <!--<input type="text" name="subjectId" id="subjectId" class="layui-input" title="所属项目"
                                        placeholder="请选择所属项目">-->
                             </div>
@@ -58,7 +58,7 @@
                         </fieldset>
 
                         <div class="layui-inline">
-                            <button type="button" class="layui-btn" id="test1">
+                            <button type="button" class="layui-btn" id="test1" onclick="setValue()">
                                 <i class="layui-icon">&#xe67c;</i>上传图片
                             </button>
                         </div>
@@ -71,7 +71,7 @@
                     <!--</div>-->
 
                     <div class="layui-input-block " style="margin-top: 60px;">
-                        <button class="layui-btn layui-col-lg-offset4" id="imgSumbmit" type="button" lay-filter="">
+                        <button class="layui-btn layui-col-lg-offset4" value="1" id="imgSumbmit" type="button" onclick="check()" lay-filter="">
                             立即提交
                         </button>
                         <button type="reset" class="layui-btn layui-btn-primary layui-col-lg-offset5">重置</button>
@@ -90,6 +90,14 @@
         var form = layui.form;
         form.render();
     });
+    function check() {
+        if ($('#imgSumbmit').val()=='1') {
+            layer_alert("请填写完善成果信息（描述及图片）");
+        }
+    }
+    function setValue() {
+        $('#imgSumbmit').val('2');
+    }
 </script>
 <script>
     function renderForm(){
@@ -130,6 +138,7 @@
             elem: '#test1' //绑定元素
             ,auto:false
             ,url:'http://47.105.187.18/displayPlatform/photograph/PhotoOnload.do?labUserCookie='+$.cookie("labUserCookie")+'&sendUrl='+window.location.href//上传接口
+            //,url:'http://localhost:8080/photograph/PhotoOnload.do?labUserCookie='+$.cookie("labUserCookie")+'&sendUrl='+window.location.href
             ,accept:'images'
             ,acceptMime:'image/*' //只显示图片
             ,multiple:'false'
@@ -144,13 +153,16 @@
             }
             ,choose:function (obj) {
                 //将每次选择的文件追加到文件队列
-                var files = obj.pushFile();
+/*                var files = obj.pushFile();
+                if (files.length>1) {
+                    delete files[0];
+                }*/
 
                 //预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
                 obj.preview(function(index, file, result) {
-                    console.log(index); //得到文件索引
+                    //console.log(index); //得到文件索引
                     console.log(file); //得到文件对象
-                    console.log(result); //得到文件base64编码，比如图片
+                    //console.log(result); //得到文件base64编码，比如图片
                     document.getElementById('image').src = result;
                     //obj.resetFile(index, file, '123.jpg'); //重命名文件名，layui 2.3.0 开始新增
                     //这里还可以做一些 append 文件列表 DOM 的操作
@@ -162,13 +174,15 @@
                 layer.load(); //上传loading
             }
             ,done: function(res){
+                console.log(res);
                 if(res.code=="0"){
                     layer.closeAll('loading'); //关闭loading
+                    console.log($('#photoDes').val());
                     layer_alert("上传成功");
-                    window.location.href='../photograph/photographShow.html';
+                    //window.location.href='../photograph/photographShow.html';
                 }else {
                     layer.closeAll('loading'); //关闭loading
-                    layer_alert("请填写成果信息");
+                    layer_alert("请填写成果描述及所属项目");
                 }
 
 
