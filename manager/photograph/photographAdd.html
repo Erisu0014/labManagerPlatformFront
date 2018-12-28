@@ -152,10 +152,6 @@
             }
             ,choose:function (obj) {
                 //将每次选择的文件追加到文件队列
-/*                var files = obj.pushFile();
-                if (files.length>1) {
-                    delete files[0];
-                }*/
 
                 //预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
                 obj.preview(function(index, file, result) {
