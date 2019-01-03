@@ -9,38 +9,41 @@
     <script src="../../js/jquery.js"></script>
 </head>
 <body>
-<div id="app">
-    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
-        <legend>资料类型添加</legend>
-    </fieldset>
-    <div class="layui-row layui-col-space10">
-        <div class="layui-form-item">
-            <label class="layui-form-label">选择父类</label>
-            <select class="layui-form-label-col layui-input-inline" name="assort1" lay-filter="assort1"
-                    v-model="selectAssort1" lay-verify="required">
-                <option :value="0">无</option>
-                <template v-for="assort1 in assort1s">
-                    <option :value="assort1.id">{{assort1.assortName}}</option>
-                </template>
-            </select>
-            <lable style="padding-top:3px">注：如果"选择父类"下拉框选择为"无",那么此次提交添加的类型为父类</lable>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">类型名称</label>
-            <div class="layui-input-inline">
-                <input type="text" name="assortName" required v-model="assortName" lay-verify="required"
-                       placeholder="类型名称" autocomplete="off" class="layui-input">
+<div class="layui-container">
+    <div id="app">
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+            <legend>资料类型添加</legend>
+        </fieldset>
+        <form>
+        <div class="layui-row">
+            <div class="layui-form-item">
+                <label class="layui-form-label">选择父类</label>
+                <select class="layui-form-label-col layui-input-inline" name="assort1" lay-filter="assort1"
+                        v-model="selectAssort1" lay-verify="required">
+                    <option :value="0">无</option>
+                    <template v-for="assort1 in assort1s">
+                        <option :value="assort1.id">{{assort1.assortName}}</option>
+                    </template>
+                </select>
+                <lable style="padding-top:3px">注：如果"选择父类"下拉框选择为"无",那么此次提交添加的类型为父类</lable>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">类型名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="assortName" required v-model="assortName" lay-verify="required"
+                           placeholder="类型名称" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" @click="prebtn()">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary" @click="reset()">重置</button>
+                </div>
             </div>
         </div>
-        <div class="layui-form-item">
-            <div class="layui-input-block">
-                <button class="layui-btn" @click="subbtn()">立即提交</button>
-                <button type="reset" class="layui-btn layui-btn-primary" @click="reset()">重置</button>
-            </div>
-        </div>
+        </form>
     </div>
 </div>
-
 <script src="../../js/jquery.cookie.js"></script>
 <script>
     var assorts;
@@ -69,6 +72,7 @@
         },
         methods: {
             subbtn: function () {
+                window.event.returnValue=false;
                 $.ajax({
                     url: "http://47.105.187.18/managerPlatform/assort/addAssort.do",
                     type: "post",
@@ -89,6 +93,12 @@
             reset:function(){
                 this.assortName="";
                 this.selectAssort1=0;
+            },
+            prebtn:function(){
+                if(this.assortName==""){
+                    return false;
+                }
+                this.subbtn();
             }
         }
     });

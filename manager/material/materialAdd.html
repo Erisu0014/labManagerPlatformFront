@@ -9,59 +9,62 @@
     <script src="../../js/jquery.js"></script>
 </head>
 <body>
-<div id="app">
-    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
-        <legend>资料添加</legend>
-    </fieldset>
-    <div class="layui-row layui-col-space10">
-        <div class="layui-col-md9">
-            <div class="layui-form-item">
-                <label class="layui-form-label">资源名称</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="materialName" required v-model="materialName" lay-verify="required"
-                           placeholder="资源名称" autocomplete="off" class="layui-input">
+<div class="layui-container">
+    <div id="app">
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+            <legend>资料添加</legend>
+        </fieldset>
+        <form>
+        <div class="layui-row">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">资源名称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="materialName" required v-model="materialName" 47.105.187.18/managerPlatform/
+                        placeholder="资源名称" autocomplete="off" class="layui-input">
+                    </div>
                 </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">资源链接</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="materialUrl" required v-model="materialUrl" lay-verify="required"
-                           placeholder="资源链接" autocomplete="off" class="layui-input">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">资源链接</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="materialUrl" required v-model="materialUrl" 47.105.187.18/managerPlatform/
+                        placeholder="资源链接" autocomplete="off" class="layui-input">
+                    </div>
                 </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">资源类型</label>
-                <select class="layui-form-label-col layui-input-inline" name="assort1" lay-filter="assort1"
-                        @change="changeAssort1()" v-model="selectAssort1" lay-verify="required">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">资源类型</label>
+                    <select class="layui-form-label-col layui-input-inline" name="assort1" lay-filter="assort1"
+                            @change="changeAssort1()" v-model="selectAssort1" 47.105.187.18/managerPlatform/>
                     <option :value="0">请选择</option>
                     <template v-for="assort1 in assort1s">
                         <option :value="assort1.id">{{assort1.assortName}}</option>
                     </template>
-                </select>
-                <select class="layui-form-label-col layui-input-inline" name="assortId" lay-filter="assort2"
-                        v-model="selectAssort2" lay-verify="required">
+                    </select>
+                    <select class="layui-form-label-col layui-input-inline" name="assortId" lay-filter="assort2"
+                            v-model="selectAssort2" 47.105.187.18/managerPlatform/>
                     <option :value="0">请选择</option>
                     <template v-for="assort2 in assort2s">
                         <option :value="assort2.id">{{assort2.assortName}}</option>
                     </template>
-                </select>
-            </div>
+                    </select>
+                </div>
 
-            <div class="layui-form-item layui-form-text">
-                <label class="layui-form-label">资源介绍</label>
-                <div class="layui-input-block">
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">资源介绍</label>
+                    <div class="layui-input-block">
                     <textarea name="materialDes" v-model="materialDes" placeholder="请输入内容"
                               class="layui-textarea"></textarea>
+                    </div>
                 </div>
-            </div>
-            <div class="layui-form-item">
-                <div class="layui-input-block">
-                    <button class="layui-btn" @click="subbtn()">立即提交</button>
-                    <button type="reset" class="layui-btn layui-btn-primary" @click="reset()">重置</button>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" @click="prebtn()">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary" @click="reset()">重置</button>
+                    </div>
                 </div>
-            </div>
         </div>
+        </form>
     </div>
+
 </div>
 <script src="../../js/jquery.cookie.js"></script>
 <script>
@@ -103,6 +106,7 @@
                 }
             },
             subbtn: function () {
+                window.event.returnValue=false;
                 $.ajax({
                     url: "http://47.105.187.18/managerPlatform/material/addMaterial.do",
                     type: "post",
@@ -128,6 +132,13 @@
                 this.materialDes="";
                 this.selectAssort1=0;
                 this.selectAssort2=0;
+            },
+            prebtn:function(){
+                if(this.materialName==""||this.materialUrl==""||(this.selectAssort1==0&&this.selectAssort2==0))
+                {
+                    return false;
+                }
+                this.subbtn();
             }
         }
     });

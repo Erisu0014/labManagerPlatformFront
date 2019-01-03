@@ -9,48 +9,49 @@
     <script src="../../js/jquery.js"></script>
 </head>
 <body>
-<div id="app">
-    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
-        <legend>资料类型修改</legend>
-    </fieldset>
-    <div class="layui-row layui-col-space10">
-        <div class="layui-col-md9">
-
-
-            <div class="layui-form-item">
-                <label class="layui-form-label">资源类型</label>
-                <select id="ass1" class="layui-form-label-col layui-input-inline" name="assort1" lay-filter="assort1"
-                        @change="changeAssort1()" v-model="selectAssort1" lay-verify="required">
-                    <option :value="0">请选择</option>
-                    <template v-for="assort1 in assort1s">
-                        <option :value="assort1.id">{{assort1.assortName}}</option>
-                    </template>
-                </select>
-                <select id="ass2" class="layui-form-label-col layui-input-inline" name="assortId" lay-filter="assort2"
-                        @change="changeAssort2()" v-model="selectAssort2" lay-verify="required">
-                    <option :value="0">请选择</option>
-                    <template v-for="assort2 in assort2s">
-                        <option :value="assort2.id">{{assort2.assortName}}</option>
-                    </template>
-                </select>
-            </div>
-
-            <div class="layui-form-item">
-                <label class="layui-form-label">资料类型新名称</label>
-                <div class="layui-input-inline">
-                    <input type="text" :value="assortName" name="assortName" required v-model="assortName"
-                           lay-verify="required" placeholder="类型名称" autocomplete="off" class="layui-input">
+<div class="layui-container">
+    <div id="app">
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+            <legend>资料类型修改</legend>
+        </fieldset>
+        <form>
+            <div class="layui-row">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">资源类型</label>
+                    <select id="ass1" class="layui-form-label-col layui-input-inline" name="assort1" lay-filter="assort1"
+                            @change="changeAssort1()" v-model="selectAssort1" lay-verify="required">
+                        <option :value="0">请选择</option>
+                        <template v-for="assort1 in assort1s">
+                            <option :value="assort1.id">{{assort1.assortName}}</option>
+                        </template>
+                    </select>
+                    <select id="ass2" class="layui-form-label-col layui-input-inline" name="assortId" lay-filter="assort2"
+                            @change="changeAssort2()" v-model="selectAssort2" lay-verify="required">
+                        <option :value="0">请选择</option>
+                        <template v-for="assort2 in assort2s">
+                            <option :value="assort2.id">{{assort2.assortName}}</option>
+                        </template>
+                    </select>
                 </div>
-                <label id="warning"></label>
-            </div>
-            <div class="layui-form-item">
-                <div class="layui-input-block">
-                    <button class="layui-btn" @click="subbtn()">立即修改</button>
-                    <button type="reset" class="layui-btn layui-btn-primary" @click="reset()">重置</button>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">资料类型新名称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" :value="assortName" name="assortName" required v-model="assortName"
+                               lay-verify="required" placeholder="类型名称" autocomplete="off" class="layui-input">
+                    </div>
+                    <label id="warning"></label>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" @click="prebtn()">立即修改</button>
+                        <button type="reset" class="layui-btn layui-btn-primary" @click="reset()">重置</button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
+
 </div>
 <script src="../../js/jquery.cookie.js"></script>
 <script>
@@ -65,7 +66,6 @@
         }
         return (false);
     }
-
     var assorts;
     var assort2s;
     $.ajax({
@@ -132,6 +132,7 @@
                 }
             },
             subbtn: function () {
+                window.event.returnValue=false;
                 $.ajax({
                     url: "http://47.105.187.18/managerPlatform/assort/editAssort.do",
                     type: "post",
@@ -155,6 +156,12 @@
                 this.selectAssort1=0;
                 this.selectAssort2=0;
                 $("#warning").html("");
+            },
+            prebtn:function(){
+                if(this.assortName==""||this.assortId==0||(this.selectAssort1==0&&this.selectAssort2==0)){
+                    return false;
+                }
+                this.subbtn();
             }
         }
     });

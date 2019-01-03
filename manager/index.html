@@ -119,7 +119,15 @@
                         <!--<a class="" href="logo/logoShow.html" target="main">logo管理</a>-->
                     <!--</li>-->
                     <li class="layui-nav-item layui-nav-itemed">
-                        <a class="" href="log/managerLog.html" target="main">日志管理</a>
+                        <a class="" href="log/managerLog.html" target="main">资料管理</a>
+                        <dl class="layui-nav-child">
+                            <dd>
+                                <a href="log/logAdd.html" target="main">添加资料</a>
+                            </dd>
+                            <dd>
+                                <a href="log/logShow.html" target="main">资料展示</a>
+                            </dd>
+                        </dl>
                     </li>
                     <li class="layui-nav-item layui-nav-itemed">
                         <a class="" href="category/categoryShow.html" target="main">类别管理</a>
@@ -226,10 +234,10 @@
                 //alert(data.info);
                 if(data.info == '404') {
                     alert(data.info)
-                    window.location.href = "../login/managerLogin.html";
+                    window.location.href = "login/managerLogin.html";
                 } else {
 
-                    window.location.href = "../login/managerLogin.html";
+                    window.location.href = "login/managerLogin.html";
                 }
             }
         });

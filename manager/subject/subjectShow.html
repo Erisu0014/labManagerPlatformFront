@@ -132,7 +132,7 @@
                 var tr = obj.tr; //获得当前行 tr 的DOM对象
 
                 if(layEvent === 'showPhoto'){ //查看
-                    //do somehing
+                    window.location.href="../photograph/photographShow.html?id="+data.subjectId;
                 } else if(layEvent === 'del'){ //删除
                     layer.confirm('真的删除项目么(包括其项目成果和项目简介)', function(index){
                         obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
