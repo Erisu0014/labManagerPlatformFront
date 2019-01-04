@@ -19,28 +19,28 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">资源名称</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="materialName" required v-model="materialName" 47.105.187.18/managerPlatform/
+                        <input type="text" name="materialName" required v-model="materialName"
                         placeholder="资源名称" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">资源链接</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="materialUrl" required v-model="materialUrl" 47.105.187.18/managerPlatform/
+                        <input type="text" name="materialUrl" required v-model="materialUrl"
                         placeholder="资源链接" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">资源类型</label>
                     <select class="layui-form-label-col layui-input-inline" name="assort1" lay-filter="assort1"
-                            @change="changeAssort1()" v-model="selectAssort1" 47.105.187.18/managerPlatform/>
+                            @change="changeAssort1()" v-model="selectAssort1">
                     <option :value="0">请选择</option>
                     <template v-for="assort1 in assort1s">
                         <option :value="assort1.id">{{assort1.assortName}}</option>
                     </template>
                     </select>
                     <select class="layui-form-label-col layui-input-inline" name="assortId" lay-filter="assort2"
-                            v-model="selectAssort2" 47.105.187.18/managerPlatform/>
+                            v-model="selectAssort2" >
                     <option :value="0">请选择</option>
                     <template v-for="assort2 in assort2s">
                         <option :value="assort2.id">{{assort2.assortName}}</option>
