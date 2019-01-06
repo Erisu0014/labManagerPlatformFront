@@ -238,8 +238,17 @@
                     data: $(data.form).serialize(),
                     success: function (info) {
                         if (info == "success") {
-                            window.location.href = "../subject/subjectShow.html";
+                            //判断界面跳转
+                            var cookie=$.cookie("labUserCookie");
+                            if (cookie.substring(0,1)==='2'){
+                                window.location.href="../index2.html";
+                            }else if(cookie.substring(0,1)==='1'){
+                                window.location.href = "../subject/subjectShow.html";
+                            }
                             return true;
+                        }else if(info=="repeat"){
+                            layer_alert("该项目已经存在简介了，不允许添加");
+                            return false;
                         }
                     }
                 });
@@ -331,7 +340,7 @@
                 // , bindAction: '#btn'
                 , choose: function (obj) {
                     //将每次选择的文件追加到文件队列
-                    var files = obj.pushFile();
+                    //var files = obj.pushFile();
 
                     //预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
                     obj.preview(function (index, file, result) {

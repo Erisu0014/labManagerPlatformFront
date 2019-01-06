@@ -67,6 +67,17 @@
                     <li class="layui-nav-item layui-nav-itemed">
                         <a href="introduction/introductionAdd.html" target="main">项目简介管理</a>
                     </li>
+                    <li class="layui-nav-item">
+                        <a class="" href="javascript:;" target="main">资料管理</a>
+                        <dl class="layui-nav-child">
+                            <dd>
+                                <a href="log/datumAdd.html" target="main">添加资料</a>
+                            </dd>
+                            <dd>
+                                <a href="log/datumShow.html" target="main">资料展示</a>
+                            </dd>
+                        </dl>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -104,7 +115,7 @@
             success: function(data) {
                 console.log(data);
                 if(data.info == '404') {
-                    window.location.href = "../login/managerLogin.html";
+                    window.location.href = "login/managerLogin.html";
                 }else{
                     second();
                 }

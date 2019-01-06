@@ -19,9 +19,9 @@
 
     <div class="layui-row">
         <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
-            <legend>项目展示</legend>
+            <legend>资料展示</legend>
         </fieldset>
-        <table class="layui-hide" id="subject" lay-filter="subject"></table>
+        <table class="layui-hide" id="datum" lay-filter="datum"></table>
     </div>
 </div>
 <script src="../../bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
@@ -31,7 +31,7 @@
 <script type="text/html" id="toolbarDemo">
     <div class="layui-inline">
         <select name="condition" id="queryCondition">
-            <option value="1">项目名</option>
+            <option value="1">资料名</option>
         </select>
     </div>
     <div class="layui-inline">
@@ -42,8 +42,7 @@
     </div>
 </script>
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs" lay-event="showPhoto">成果展示</a>
-    <a class="layui-btn layui-btn-xs" lay-event="editIntro">编辑简介</a>
+    <!--<a class="layui-btn layui-btn-xs" lay-event="downloadDatum">下载</a>-->
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
@@ -78,8 +77,8 @@
 
             //var subjectName = $.query.get("subjectName");
             table.render({
-                id: 'subjectInfo'
-                ,elem: '#subject'
+                id: 'datumInfo'
+                ,elem: '#datum'
                 ,toolbar: '#toolbarDemo'
                 ,height: 500
                 ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
@@ -88,7 +87,7 @@
                     ,limit:10
                     ,limits:[10,20,30,40,50,60,70,80]
                 }
-                ,url: 'http://47.105.187.18/managerPlatform/subject/subjectsShow.do'
+                ,url: 'http://47.105.187.18/managerPlatform/datum/datumShow.do'
                 ,where: {
                     labUserCookie: $.cookie("labUserCookie"),
                     sendUrl: window.location.href
@@ -97,22 +96,23 @@
                 // ,limit:5
                 // ,limits:[10,20,30,40,50,60,70,80]
                 ,cols: [[ //表头
-                    {field: 'subjectId',width:100, title: '项目ID', sort: true,fixed: 'left'},
-                    {field: 'subjectName',width:250, title: '项目名称', sort: true,fixed: 'left',edit:'text   '}
-                    ,{field: 'subjectTeacher',width:100, title: '指导教师',edit:'text'}
-                    ,{field: 'subjectStudent', title: '项目主要人员',edit:'text'}
-                    ,{fixed: 'right', width:200, align:'center', toolbar: '#barDemo'}
+                    {field: 'datumOldname',width:250, title: '资料名', sort: true,fixed: 'left'}
+                    ,{field: 'subjectName',width:250, title: '所属项目'}
+                    ,{field: 'datumUser', title: '上传人员'}
+                    ,{field: 'datumLastdate', title: '创建时间', sort: true}
+                    ,{field:'datumNewname',title:'下载链接',templet: '<div><a href="{{d.datumNewname}}" class="layui-table-link" download="{{d.datumOldname}}">{{d.datumOldname}}</a></div>'}
+                     ,{fixed: 'right', width:200, align:'center', toolbar: '#barDemo'}
                 ]]
             });
 
-            table.on('toolbar(subject)', function(obj){
+            table.on('toolbar(datum)', function(obj){
                 var checkStatus = table.checkStatus(obj.config.id);
                 switch(obj.event){
                     case 'isAll':
                         con.condition = $("#queryCondition").val();
                         con.context = $("#queryContext").val();
 
-                        table.reload('subjectInfo',{
+                        table.reload('datumInfo',{
                             where:{
                                 labUserCookie: $.cookie("labUserCookie"),
                                 sendUrl: window.location.href,
@@ -126,91 +126,85 @@
                         break;
                 };
             });
-            table.on('tool(subject)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+            table.on('tool(datum)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
                 var data = obj.data; //获得当前行数据
                 var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
                 var tr = obj.tr; //获得当前行 tr 的DOM对象
 
-                if(layEvent === 'showPhoto'){ //查看
-                    window.location.href="../photograph/photographShow.html?id="+data.subjectId;
+                if(layEvent === 'downloadDatum'){ //下载
+                    // $.ajax({
+                    //     type: "get",
+                    //     url: "http://47.105.187.18/managerPlatform/datum/downloadOne.do",
+                    //     data:{
+                    //         labUserCookie: $.cookie("labUserCookie"),
+                    //         sendUrl: window.location.href,
+                    //         datumOldname:data.datumOldname,
+                    //         datumNewname:data.datumNewname
+                    //     },
+                    //     success: function (info) {
+                    //         // console.log(info);
+                    //         if (info == "success") {
+                    //             return true;
+                    //         }
+                    //     }
+                    // });
+
                 } else if(layEvent === 'del'){ //删除
-                    layer.confirm('真的删除项目么(包括其项目成果、简介及内部资源)', function(index){
+                    layer.confirm('确定删除该项目资源吗', function(index){
                         obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
                         layer.close(index);
                         $.ajax({
                             type: "get",
-                            url: "http://47.105.187.18/managerPlatform/subject/subjectDel.do",
+                            url: "http://47.105.187.18/managerPlatform/datum/datumDel.do",
                             data:{
                                 labUserCookie: $.cookie("labUserCookie"),
                                 sendUrl: window.location.href,
-                                subjectId:data.subjectId
+                                datumId:data.datumId
                             },
                             success: function (info) {
                                 // console.log(info);
                                 if (info == "success") {
-                                    console.log("已删除");
                                     return true;
-                                }else if(info=="fail"){
-                                    console.log("删除失败");
                                 }
                             }
                         });
                     });
-                } else if(layEvent === 'editIntro'){ //编辑简介
-                    $.ajax({
-                        type: "post",
-                        url: "http://47.105.187.18/managerPlatform/intro/hasIntro.do",
-                        data:{
-                            labUserCookie: $.cookie("labUserCookie"),
-                            sendUrl: window.location.href,
-                            subjectId:data.subjectId
-                        },
-                        success: function (info) {
-                            console.log(info);
-                            if (info == "success") {
-                                window.location.href = "../introduction/introductionEdit.html?subjectId="+data.subjectId;
-                                return true;
-                            }else if(info=="fail"){
-                                layer_confirm("当前项目没有简介，是否新建");
-                            }
-                        }
-                    });
                 }
             });
 
-            table.on('edit(subject)', function(obj){ //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
-                $.ajax({
-                    type: "get",
-                    url: "http://47.105.187.18/managerPlatform/subject/subjectsEdit.do",
-                    dataType: "json",
-                    async: false,
-                    data:{
-                        labUserCookie: $.cookie("labUserCookie"),
-                        sendUrl: window.location.href,
-                        subjectId:obj.data['subjectId'],
-                        subjectName:obj.data['subjectName'],
-                        subjectTeacher:obj.data['subjectTeacher'],
-                        subjectStudent:obj.data['subjectStudent'],
-                        uid: $.cookie("uid")
-                    },
-                    success: function(data) {
-                        console.log(data);
-                    }
-                });
-            });
+            // table.on('edit(subject)', function(obj){ //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
+            //     $.ajax({
+            //         type: "get",
+            //         url: "http://47.105.187.18/managerPlatform/subject/subjectsEdit.do",
+            //         dataType: "json",
+            //         async: false,
+            //         data:{
+            //             labUserCookie: $.cookie("labUserCookie"),
+            //             sendUrl: window.location.href,
+            //             subjectId:obj.data['subjectId'],
+            //             subjectName:obj.data['subjectName'],
+            //             subjectTeacher:obj.data['subjectTeacher'],
+            //             subjectStudent:obj.data['subjectStudent'],
+            //             uid: $.cookie("uid")
+            //         },
+            //         success: function(data) {
+            //             console.log(data);
+            //         }
+            //     });
+            // });
         });
     }
-    function layer_confirm(msg) {
-        layui.use('layer', function (layer) {
-            layer.confirm(msg, {
-                btn: ['确定','取消'] //按钮
-            },
-                function () {
-                    window.location.href="../introduction/introductionAdd.html";
-                }
-        );
-        });
-    }
+    // function layer_confirm(msg) {
+    //     layui.use('layer', function (layer) {
+    //         layer.confirm(msg, {
+    //                 btn: ['确定','取消'] //按钮
+    //             },
+    //             function () {
+    //                 // window.location.href="../introduction/introductionAdd.html";
+    //             }
+    //         );
+    //     });
+    // }
 
 
 </script>
